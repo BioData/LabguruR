@@ -36,10 +36,15 @@ labguru_sys_variables()
 
 # Upload data to Labguru
 
-You can now upload a dataset to Labguru using labguru_upload_dataset:
+You can now upload a dataset to Labguru using labguru_upload_dataset. There is sample data you can load from the package.
 
 ```{r}
-labguru_upload_dataset(dataset    = mtcars,
-                       name       = "mtcars",
-                       desription = "Motor Trend Car Road Tests data")
+data("compensation")
+compensation
+```
+
+```{r}
+labguru_upload_dataset(dataset    = compensation,
+                       name       = "compensation",
+                       desription = "Root, fruit and grazing data")
 ```
