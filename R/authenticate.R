@@ -52,7 +52,7 @@ labguru_authenticate <- function(email, password, server = "https://jonathan.lab
   path     <- "/api/v1/sessions.json"
   
   url      <- httr::modify_url(url  = base_url, 
-                               path = sessions_url)
+                               path = path)
   
   # BODY
   body         <- list("login"    = email, 
