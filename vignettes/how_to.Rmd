@@ -1,0 +1,45 @@
+---
+title: "How to?"
+author: "Jiddu Alexander"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+# Authenticate
+
+First get an authentication token using labguru_authenticate.
+
+```{r}
+labguru_authenticate(email    = "my@@email.com",
+                     password = "mypassword",
+                     server   = "https://jonathan.labguru.com",
+                     set_sys  = TRUE)
+```
+
+With set_sys = TRUE your system variables LABGURU_SERVER and LABGURU_TOKEN are automatically set and can be picked up by future function calls conencting to the Labguru API. Check these variables using labguru_sys_variables()
+
+```{r}
+labguru_sys_variables()
+```
+
+# Upload data to Labguru
+
+You can now upload a dataset to Labguru using labguru_upload_dataset:
+
+```{r}
+labguru_upload_dataset(dataset    = mtcars,
+                       name       = "mtcars",
+                       desription = "Motor Trend Car Road Tests data")
+```
