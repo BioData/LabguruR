@@ -3,4 +3,5 @@
 export(labguru_authenticate)
 export(labguru_sys_variables)
 export(labguru_upload_dataset)
+export(labguru_upload_image)
 export(labguru_valid_token)
