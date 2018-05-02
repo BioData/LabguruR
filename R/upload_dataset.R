@@ -73,7 +73,7 @@ labguru_upload_dataset <- function(dataset,
     stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
   }
   
-  return(NULL)
+  invisible(TRUE)
 }
 
 
