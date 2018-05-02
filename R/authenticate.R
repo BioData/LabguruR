@@ -89,6 +89,7 @@ labguru_authenticate <- function(email, password, server = "https://jonathan.lab
   # Set System environment
   if (set_sys) {
     Sys.setenv(LABGURU_TOKEN = token)
+    message("Token set in environment variable.")
     
     # Return token invisibly
     invisible(token)
