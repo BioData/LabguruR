@@ -65,7 +65,14 @@ labguru_authenticate <- function(email, password, server = "https://jonathan.lab
   
   # Expect resp to be JSON 
   if (httr::http_type(resp) != "application/json") {
-    stop("API did not return JSON", call. = FALSE)
+    message("First request unsuccessful. Retrying...")
+    # Retry POST
+    resp <- httr::POST(url    = url, 
+                       body   = body, 
+                       encode = "json")
+    if (httr::http_type(resp) != "application/json") {
+      stop("API did not return JSON. Please try again.", call. = FALSE)
+    }
   }
    
   # Parse without simplifaction for consistency
@@ -82,9 +89,13 @@ labguru_authenticate <- function(email, password, server = "https://jonathan.lab
   # Set System environment
   if (set_sys) {
     Sys.setenv(LABGURU_TOKEN = token)
+    
+    # Return token invisibly
+    invisible(token)
+  } else {
+    # If system environment is not set return token visibly
+    token
   }
-  
-  invisible(token)
 }
 
 
