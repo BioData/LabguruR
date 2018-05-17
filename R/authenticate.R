@@ -13,6 +13,10 @@
 #' @return acces token (string)
 #' @export
 #'
+#' @import httr
+#' @importFrom jsonlite fromJSON
+#' 
+#'
 #' @examples
 #' labguru_authenticate(email    = "my@@email.com",
 #'                      password = "mypassword",
@@ -30,17 +34,11 @@ labguru_authenticate <- function(email, password, server = "https://jonathan.lab
     stop("Invalid email address")
   }
   
-  if (!is.character(password)) {
-    stop("Password has to be a character string")
-  } 
+  if (!is.character(password)) stop("Password has to be a character string")
   
-  if (!is.character(server)) {
-    stop("Server has to be a character string")
-  } 
+  if (!is.character(server)) stop("Server has to be a character string")
   
-  if (!is.logical(set_sys)) {
-    stop("set_sys has to be a logical")
-  } 
+  if (!is.logical(set_sys)) stop("set_sys has to be a logical")
   
   # Set server assystem variable
   if (set_sys) {
@@ -55,8 +53,8 @@ labguru_authenticate <- function(email, password, server = "https://jonathan.lab
                                path = path)
   
   # BODY
-  body         <- list("login"    = email, 
-                       "password" = password)
+  body <- list("login"    = email, 
+               "password" = password)
   
   # POST
   resp <- httr::POST(url    = url, 
@@ -110,7 +108,7 @@ labguru_authenticate <- function(email, password, server = "https://jonathan.lab
 #' @examples
 #' labguru_valid_token()
 labguru_valid_token <- function(token = Sys.getenv("LABGURU_TOKEN")) {
-  print("This function is not implemetned yet")
+  print("This function is not implemented yet")
 }
 
 

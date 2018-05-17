@@ -12,6 +12,9 @@
 #'
 #' @return NULL
 #' @export
+#' 
+#' @import httr
+#' @importFrom jsonlite fromJSON
 #'
 #' @examples
 #' data("compensation")
@@ -100,7 +103,9 @@ labguru_upload_file <- function(file_path,
 
 
 #' Labguru upload visualization
-#'
+#' 
+#' 
+#' 
 #' @param file_path 
 #' @param name 
 #' @param server 
@@ -182,7 +187,9 @@ labguru_upload_visualization <- function(file_path,
 #' @param token 
 #'
 #' @return
-#' @export
+#' 
+#' @import httr
+#' @importFrom jsonlite fromJSON
 #'
 #' @examples
 labguru_link_visualization <- function(dataset_id, 

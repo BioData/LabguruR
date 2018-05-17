@@ -2,7 +2,7 @@
 % Please edit documentation in R/helpers.R
 \name{is_valid_email}
 \alias{is_valid_email}
-\title{Valid email}
+\title{Is valid email}
 \usage{
 is_valid_email(x)
 }
@@ -15,7 +15,7 @@ Check if an email address is valid}
 BOOLEAN
 }
 \description{
-Valid email
+Is valid email
 }
 \examples{
 is_valid_email("my@valid_email.com")

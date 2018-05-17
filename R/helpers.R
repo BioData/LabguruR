@@ -1,6 +1,5 @@
 
-
-#' Valid email
+#' Is valid email
 #'
 #' @param x email address
 #' 

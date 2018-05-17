@@ -1,6 +1,4 @@
 
-
-
 #' Labguru Upload Dataset
 #'
 #' Upload a dataset to labguru
@@ -14,6 +12,9 @@
 #' @return NULL
 #' @export
 #'
+#' @import httr
+#' @importFrom jsonlite fromJSON
+#' 
 #' @examples
 #' labguru_upload_dataset(dataset    = mtcars,
 #'                        name       = "mtcars",
