@@ -90,6 +90,9 @@ labguru_authenticate <- function(email, password, server = "https://jonathan.lab
   # Return token
   token  <- parsed$token
   
+  # Wrong login details
+  if (token == "-1") stop("Invalid credentials")
+  
   # Set System environment
   if (set_sys) {
     Sys.setenv(LABGURU_TOKEN = token)
