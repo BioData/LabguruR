@@ -5,7 +5,7 @@
 #'
 #' @param file Single character that is the path to a file
 #' @param title Single character as visualization title on Labguru
-#' @param desciption Single character to describe visualization on Labguru
+#' @param description Single character to describe visualization on Labguru
 #' @param attach_to_uuid (optional) single character that is the LG_UUID of the object to which this file should be attached
 #' @param server Single character indicating the server URL
 #' @param token Single character access token for API authentication
@@ -45,17 +45,6 @@ labguru_upload_file <- function(file,
   check_arg_attach_to_uuid(attach_to_uuid)
   check_arg_server(server)
   check_arg_token(token)
-  
-  # if (server == "") stop("Argument server not set")
-  # if (token == "") stop("Argument token not set")
-  # if (!is.character(file)) stop("Argument file_path is not a character string")
-  # if (!file.exists(file)) stop(paste("Can't find file", file))
-  # if (!is.character(title)) stop("Argument name is not a character string")
-  # if (!is.null(description)) {
-  #   if (!is.character(description)) stop("Argument description is not a character string (or NULL)")
-  # }
-  # 
-  # if (!is.null(attach_to_uuid)) stop("Sorry, attach_to_uuid can't be used yet")
   
   # URL
   base_url <- server
@@ -98,28 +87,15 @@ labguru_upload_file <- function(file,
 
 
 
-# base_url <- "https://jonathan.labguru.com"
-# url <- paste(base_url, "/api/v1/attachments",sep="")
-# fd <-  list ("item[title]"  = 'comps graph', "item[attachment]" = upload_file("grazing.png"), "token" = token) 
-# attachment <- POST(url, body = fd)
-# dat <- jsonlite::fromJSON(content(attachment, as="text"))
-# 
-# url <- paste(base_url, "/api/v1/visualizations","?token=",token,sep="")
-# dataset_id <- 1 
-# attachment_id <- dat$id
-# data <- list( "dataset_id" = dataset_id, "attachment_id" = attachment_id, "name" = "Root VS BioMass", description = "")
-# item_to_post <- list("item" = data)
-# element <- httr::POST(url, body = item_to_post,encode ="json")
-
-
 #' Labguru upload visualization
 #' 
 #' 
 #' 
 #' @param file Single character that is a path to a file
-#' @param title Single character as visualization title on Labguru
-#' @param desciption Single character to describe visualization on Labguru
+#' @param title Single character that is the title for the uploaded file on Labguru
 #' @param dataset_id Numeric to link the visualization to dataset(s) on Labguru
+#' @param name Single character that is the name for visualisation link with database 
+#' @param description Single character to describe visualization on Labguru
 #' @param server 
 #' @param token 
 #'
@@ -129,19 +105,22 @@ labguru_upload_file <- function(file,
 #' @examples
 labguru_upload_visualization <- function(file, 
                                          title,
-                                         description = NULL,
-                                         dataset_id  = NULL,
-                                         server      = Sys.getenv("LABGURU_SERVER"), 
-                                         token       = Sys.getenv("LABGURU_TOKEN")) {
+                                         dataset_id     = NULL,
+                                         name           = NULL,
+                                         description    = NULL,
+                                         attach_to_uuid = NULL,
+                                         server         = Sys.getenv("LABGURU_SERVER"), 
+                                         token          = Sys.getenv("LABGURU_TOKEN")) {
   
   # Check arguments
   check_arg_file(file)
   check_arg_title(title)
   check_arg_description(description)
-  check_arg_dataset_id(dataset_id)
+  check_arg_attach_to_uuid(attach_to_uuid)
   check_arg_server(server)
   check_arg_token(token)
   
+  # Upload file
   uploaded_file <- labguru_upload_file(file           = file,
                                        title          = title,
                                        description    = description,
@@ -149,31 +128,23 @@ labguru_upload_visualization <- function(file,
                                        server         = server,
                                        token          = token)
   
-  uploaded_file$id
-  
+  # Link file to dataset if dataset_id is set
   if (!is.null(dataset_id)) {
-    # Link
-    labguru_link_visualization(dataset_id    = datset_id,
-                               attachment_id = uploaded_file$id,
-                               name          = "?",
-                               description   = "?",
-                               server        = server,
-                               token         = token)
+    # Check arguments
+    check_arg_dataset_id(dataset_id)
+    check_arg_name(name)
+    
+    link <- labguru_link_visualization(dataset_id    = dataset_id,
+                                       attachment_id = uploaded_file$id,
+                                       name          = name,
+                                       description   = description,
+                                       server        = server,
+                                       token         = token)
+    list(file = uploaded_file,
+         link = link)
+  } else {
+    uploaded_file
   }
-  
-  
-  # # Test arguments
-  # if (server == "") stop("Argument server not set")
-  # if (token == "") stop("Argument token not set")
-  # if (!is.character(file_path)) stop("Argument file_path is not a character string")
-  # if (!file.exists(file_path)) stop(paste("Can't find file", file_path))
-  # if (!is.character(name)) stop("Argument name is not a character string")
-  # # if (!is.null(description)) {
-  # #   if (!is.character(description)) stop("Argument description is not a character string (or NULL)")
-  # # }
-  # # 
-  # # if (!is.null(attach_to_uuid)) stop("Sorry, attach_to_uuid can't be used yet")
-  
 }
 
 
@@ -208,43 +179,46 @@ labguru_link_visualization <- function(dataset_id,
                                        token          = Sys.getenv("LABGURU_TOKEN")) {
   
   # Test arguments
-  if (server == "") stop("Argument server not set")
-  if (token == "") stop("Argument token not set")
-  # if (!is.character(file_path)) stop("Argument file_path is not a character string")
-  # if (!file.exists(file_path)) stop(paste("Can't find file", file_path))
-  if (!is.character(name)) stop("Argument name is not a character string")
-  # if (!is.null(description)) {
-  #   if (!is.character(description)) stop("Argument description is not a character string (or NULL)")
-  # }
-  # 
-  # if (!is.null(attach_to_uuid)) stop("Sorry, attach_to_uuid can't be used yet")
+  # check_arg_dataset_id(dataset_id)
+  # check_arg_attachment_id(attachment_id)
+  check_arg_name(name)
+  check_arg_description(description)
+  check_arg_server(server)
+  check_arg_token(token)
   
+
   # URL
   base_url <- server
   path     <- "/api/v1/visualizations"
   
-  url <- httr::modify_url(url   = base_url, 
-                          path  = path)
+  # # Preferred
+  # url <- httr::modify_url(url   = base_url, 
+  #                         path  = path)
+  # 
+  # # Body
+  # body <- list("token"               = token,
+  #              "item[dataset_id]"    = dataset_id,
+  #              "item[attachment_id]" = attachment_id,
+  #              "item[name]"          = name,
+  #              "item[description]"   = description)
+  # # Post
+  # resp <- httr::POST(url    = url, 
+  #                    body   = body,
+  #                    encode = "json")
   
-  # Body
-  # data <- list("dataset_id"    = dataset_id, 
-  #              "attachment_id" = attachment_id, 
-  #              "name"          = name, 
-  #              description     = description)
-  # body <- list("token" = token,
-  #              "item"  = data)
+  url <- paste(base_url, "/api/v1/visualizations", "?token=", token, sep="")
   
-  # OR
-  body <- list("token"               = token,
-               "item[dataset_id]"    = dataset_id,
-               "item[attachment_id]" = attachment_id,
-               "item[name]"          = name,
-               "item[description]"   = description)
+  data <- list(dataset_id    = dataset_id, 
+               attachment_id = attachment_id, 
+               name          = name, 
+               description   = description)
   
-  # Post
-  resp <- httr::POST(url    = url, 
-                     body   = body,
+  item_to_post <- list(item = data)
+  
+  resp <- httr::POST(url, 
+                     body = item_to_post,
                      encode = "json")
+  
   
   # Expect resp to be JSON 
   if (httr::http_type(resp) != "application/json") {
@@ -259,5 +233,8 @@ labguru_link_visualization <- function(dataset_id,
     stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
   }
   
-  invisible(TRUE)
+  # invisible(TRUE)
+  # RETURN ID AND URL
+  list(id  = parsed$id,
+       url = parsed$api_url)
 }

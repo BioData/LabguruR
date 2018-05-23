@@ -8,9 +8,9 @@ labguru_authenticate(email, password, server = "https://jonathan.labguru.com",
   set_sys = TRUE)
 }
 \arguments{
-\item{email}{Character - Email address}
+\item{email}{Single character email address}
 
-\item{password}{Character - Pasword}
+\item{password}{Single character password}
 
 \item{server}{Character - Server URL, "https://jonathan.labguru.com" by default}
 

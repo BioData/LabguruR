@@ -13,13 +13,14 @@ labguru_link_visualization(dataset_id, attachment_id, name,
 
 \item{attachment_id}{}
 
-\item{name}{}
-
 \item{description}{}
 
 \item{server}{}
 
 \item{token}{}
+}
+\value{
+
 }
 \description{
 Title

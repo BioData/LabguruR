@@ -4,8 +4,7 @@
 \alias{labguru_upload_dataset}
 \title{Labguru Upload Dataset}
 \usage{
-labguru_upload_dataset(dataset, name, description = NULL,
-  server = Sys.getenv("LABGURU_SERVER"),
+labguru_upload_dataset(dataset, name, server = Sys.getenv("LABGURU_SERVER"),
   token = Sys.getenv("LABGURU_TOKEN"))
 }
 \arguments{
@@ -13,11 +12,11 @@ labguru_upload_dataset(dataset, name, description = NULL,
 
 \item{name}{A character string}
 
-\item{description}{A character string or NULL (default) to ignore}
-
 \item{server}{A character string indicating the server URL}
 
 \item{token}{An access token for API authentication}
+
+\item{description}{A character string or NULL (default) to ignore}
 }
 \description{
 Upload a dataset to labguru

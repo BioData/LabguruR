@@ -44,7 +44,44 @@ compensation
 ```
 
 ```{r}
-labguru_upload_dataset(dataset    = compensation,
-                       name       = "compensation",
-                       desription = "Root, fruit and grazing data")
+up_0 <- labguru_upload_dataset(dataset     = compensation,
+                               name        = "compensation")
+up_0
+```
+
+
+
+Upload a R script
+
+```{r}
+up_1 <- labguru_upload_file(file  = "../data-raw/sample_upload_script.R", 
+                            title = "My R script")
+```
+
+
+Upload an image
+
+```{r}
+up_2 <- labguru_upload_file(file  = "../data-raw/grazing.png", 
+                            title = paste("grazing", Sys.time()))
+up_2
+```
+
+Attach uploaded file to a database
+
+```{r}
+up_3 <- labguru_link_visualization(dataset_id = 61,
+                                   attachment_id = up_2$id,
+                                   name = "my_link")
+up_3
+```
+
+Upload image with immediate link to database
+
+```{r}
+up_4 <- labguru_upload_visualization(file  = "../data-raw/grazing.png", 
+                                     title = paste("grazing_again", Sys.time()),
+                                     dataset_id = 61,
+                                     name = "my_second_link")
+up_4
 ```
