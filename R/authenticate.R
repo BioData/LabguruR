@@ -5,8 +5,8 @@
 #' This function authenticates a user by email and password and returns a token and sets the system 
 #' variable LABGURU_TOKEN to that token by default.
 #'
-#' @param email Character - Email address
-#' @param password Character - Pasword
+#' @param email Single character email address
+#' @param password Single character password
 #' @param server Character - Server URL, "https://jonathan.labguru.com" by default
 #' @param set_sys Set server and token as system variables LABGURU_SERVER and LABGURU_TOKEN 
 #' 
@@ -27,18 +27,24 @@ labguru_authenticate <- function(email, password, server = "https://jonathan.lab
   # Add user agent? ua <- httr::user_agent("http://github.com/BioData/LabguruR")
   
   
-  # Test arguments
-  if (!is.character(email)) {
-    stop("Email has to be a character string")
-  } else if (!is_valid_email(email)) {
-    stop("Invalid email address")
-  }
+  # Check arguments
+  check_arg_email(email)
+  check_arg_password(password)
+  check_arg_server(server)
+  check_arg_set_sys(set_sys)
   
-  if (!is.character(password)) stop("Password has to be a character string")
-  
-  if (!is.character(server)) stop("Server has to be a character string")
-  
-  if (!is.logical(set_sys)) stop("set_sys has to be a logical")
+  # # Test arguments
+  # if (!is.character(email)) {
+  #   stop("Email has to be a character string")
+  # } else if (!is_valid_email(email)) {
+  #   stop("Invalid email address")
+  # }
+  # 
+  # if (!is.character(password)) stop("Password has to be a character string")
+  # 
+  # if (!is.character(server)) stop("Server has to be a character string")
+  # 
+  # if (!is.logical(set_sys)) stop("set_sys has to be a logical")
   
   # Set server assystem variable
   if (set_sys) {
