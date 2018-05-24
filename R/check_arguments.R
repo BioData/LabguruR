@@ -182,4 +182,34 @@ check_arg_token <- function(token) {
   return(TRUE)
 }
 
+#' Check argument page
+#' 
+#' Page number of GET request must be integer
+#'
+#' @param page argument to check
+#'
+#' @return TRUE or error
+check_arg_page <- function(page) {
+  if (length(page) != 1) stop("Argument page must be length 1")
+  if (!is.numeric(page)) stop("Argument page is not numeric")
+  if (!page%%1==0) stop("Argument page is not an integer value")
+  
+  return(TRUE)
+}
 
+#' Check argument get_cols
+#' 
+#' Character with columns of a dataframe to return
+#'
+#' @param get_cols argument to check
+#' @param opts Possible values for get_cols
+#'
+#' @return TRUE or error
+check_arg_get_cols <- function(get_cols, opts) {
+  if (!is.character(get_cols)) stop("Argument get_cols must be character")
+  if (!is.character(opts)) stop("Package issue. Contact the package maintainer.")
+  if (!get_cols %in% opts) stop(paste0(get_cols, " is not a valid option for get_cols argument. Must be one of: ",
+                                       paste(opts, collapse = ", ")))
+  
+  return(TRUE)
+}
