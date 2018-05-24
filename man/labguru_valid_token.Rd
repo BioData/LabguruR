@@ -16,5 +16,7 @@ logical
 Labguru Valid Token
 }
 \examples{
+\dontrun{
 labguru_valid_token()
+}
 }

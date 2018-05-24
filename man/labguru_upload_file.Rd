@@ -28,6 +28,7 @@ list containing uploaded id and url
 Upload a file to Labguru
 }
 \examples{
+\dontrun{
 data("compensation")
 
 library(ggplot2)
@@ -42,4 +43,5 @@ ggsave("grazing.png", plot)
 labguru_upload_image(file_path   = "grazing.png",
                      name        = "Grazing",
                      description = "Fruit production versus Root biomass for grazed and ungrazed")
+}
 }

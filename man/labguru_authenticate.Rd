@@ -24,7 +24,9 @@ This function authenticates a user by email and password and returns a token and
 variable LABGURU_TOKEN to that token by default.
 }
 \examples{
+\dontrun{
 labguru_authenticate(email    = "my@email.com",
                      password = "mypassword",
                      server   = "https://jonathan.labguru.com")
+}
 }

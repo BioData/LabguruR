@@ -13,5 +13,7 @@ print Labguru system variables
 Labguru system variables
 }
 \examples{
+\dontrun{
 labguru_sys_variables()
+}
 }
