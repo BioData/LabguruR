@@ -49,6 +49,20 @@ up_0 <- labguru_upload_dataset(dataset     = compensation,
 up_0
 ```
 
+# List available datasets from labguru
+
+```{r}
+ld <- labguru_list_datasets()
+ld
+```
+
+# Download single dataset
+
+```{r}
+df <- labguru_download_dataset(dataset_id = 1)
+head(df)
+```
+
 
 
 Upload a R script
@@ -85,3 +99,4 @@ up_4 <- labguru_upload_visualization(file  = "../data-raw/grazing.png",
                                      name = "my_second_link")
 up_4
 ```
+
