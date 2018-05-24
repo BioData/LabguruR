@@ -18,9 +18,11 @@
 #' 
 #'
 #' @examples
+#' \dontrun{
 #' labguru_authenticate(email    = "my@@email.com",
 #'                      password = "mypassword",
 #'                      server   = "https://jonathan.labguru.com")
+#' }
 labguru_authenticate <- function(email, password, server = "https://jonathan.labguru.com", set_sys = TRUE) {
   
   # EXTRAS:
@@ -115,7 +117,9 @@ labguru_authenticate <- function(email, password, server = "https://jonathan.lab
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' labguru_valid_token()
+#' }
 labguru_valid_token <- function(token = Sys.getenv("LABGURU_TOKEN")) {
   print("This function is not implemented yet")
 }
@@ -127,7 +131,9 @@ labguru_valid_token <- function(token = Sys.getenv("LABGURU_TOKEN")) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' labguru_sys_variables()
+#' }
 labguru_sys_variables <- function() {
   print(paste("LABGURU SERVER:", Sys.getenv("LABGURU_SERVER")))
   print(paste("LABGURU TOKEN:", Sys.getenv("LABGURU_TOKEN")))

@@ -17,6 +17,7 @@
 #' @importFrom jsonlite fromJSON
 #'
 #' @examples
+#' \dontrun{
 #' data("compensation")
 #' 
 #' library(ggplot2)
@@ -31,6 +32,7 @@
 #' labguru_upload_image(file_path   = "grazing.png",
 #'                      name        = "Grazing",
 #'                      description = "Fruit production versus Root biomass for grazed and ungrazed")
+#' }
 labguru_upload_file <- function(file, 
                                 title,
                                 description    = NULL,
