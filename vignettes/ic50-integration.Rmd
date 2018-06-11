@@ -1,0 +1,63 @@
+---
+title: "ic50 integration"
+author: "Jiddu Alexander"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r}
+library(ic50)
+```
+
+Functions:
+
+- ic50()
+- hts.96()
+- hts.384()
+
+```{r, eval=FALSE}
+ic50()
+```
+
+```{r}
+dir <- "../data-raw/ic50/experiment-001/Files/"
+```
+
+
+```{r}
+hts.384(indir     = "NSCLC_screen",
+        measure   = "mpi384_measure.txt",
+        control   = "mpi384_control.txt",
+        dilution  = "mpi384_dilution.txt",
+        inhib     = rep(0.5,7),
+        outdir    = "NSCLC_results",
+        normalize = "mean",
+        graphics  = "single",
+        outdir    = paste0(dir, "A549-output"))
+```
+
+```{r}
+hts.96(indir     = paste0(dir, "A549"),
+       plates    = 2,
+       measure   = paste0(dir, "mpi384_measure.txt"),
+       control   = paste0(dir, "mpi384_control.txt"),
+       dilution  = paste0(dir, "mpi384_dilution.txt"),
+       inhib     = NULL,
+       normalize = "single",
+       graphics  = "single",
+       outdir    = paste0(dir, "A549-output"))
+```
+
+
+
+
+
+
+
+
+
