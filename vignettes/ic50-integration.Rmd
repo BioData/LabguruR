@@ -9,53 +9,366 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# Introduction to the ic50 package
 
 ```{r}
 library(ic50)
 ```
 
-Functions:
+Functions within the ic50 package. 
 
-- ic50()
-- hts.96()
-- hts.384()
+- ic50() to launch the GUI
+- hts.96() to analyse a plate with 96 wells
+- hts.384() to analyse a a plate with 384 wells
 
 ```{r, eval=FALSE}
 ic50()
 ```
 
-```{r}
-dir <- "../data-raw/ic50/experiment-001/Files/"
-```
-
+Example of running the 384 wells analysis with local files.
 
 ```{r}
-hts.384(indir     = "NSCLC_screen",
-        measure   = "mpi384_measure.txt",
-        control   = "mpi384_control.txt",
-        dilution  = "mpi384_dilution.txt",
+dir <- "../data-raw/ic50/experiment-001/"
+
+hts.384(indir     = paste0(dir, "Files"),
+        plates    = 2,
+        measure   = paste0(dir, "Suppl-files/mpi384_measure.txt"),
+        control   = paste0(dir, "Suppl-files/mpi384_control.txt"),
+        dilution  = paste0(dir, "Suppl-files/mpi384_dilution.txt"),
         inhib     = rep(0.5,7),
-        outdir    = "NSCLC_results",
+        outdir    = paste0(dir, "Output"),
         normalize = "mean",
-        graphics  = "single",
-        outdir    = paste0(dir, "A549-output"))
+        graphics  = "single")
+```
+
+# Downloading plates data from a Labguru server
+
+## Setting up Labguru connection
+
+```{r}
+# Load LabgururR locally
+
+devtools::load_all()
+
+# Authenticate
+
+email    <- ""
+password <- ""
+
+labguru_authenticate(email, password)
+
+```
+
+## Download JSON data
+
+Loading JSON for plate 271
+
+```{r}
+server <- Sys.getenv("LABGURU_SERVER")
+token  <- Sys.getenv("LABGURU_TOKEN")
+# "https://jonathan.labguru.com/api/v1/plates/271"
+base_url <- server
+path     <- "/api/v1/plates/271"
+query    <- paste0("token=", token)
+
+url <- httr::modify_url(url   = base_url, 
+                        path  = path,
+                        query = query)
+
+resp <- httr::GET(url)
+
+# Expect resp to be JSON 
+if (httr::http_type(resp) != "application/json") {
+  stop("API did not return JSON", call. = FALSE)
+}
+
+# Parse without simplifaction for consistency
+parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), 
+                             simplifyVector    = FALSE, 
+                             simplifyDataFrame = TRUE, 
+                             flatten           = TRUE)
+
+# check for request error
+if (httr::http_error(resp)) {
+  stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
+}
+```
+
+## Explore data 
+
+Further parse the JSON deom the data element
+
+```{r}
+prs_data <- jsonlite::fromJSON(parsed$data)
+```
+
+The parsed data has several elements:
+
+```{r}
+names(prs_data)
+```
+
+- 'wells' contains the measure, dilution and control data
+- 'samples' contains information on the compounds
+- 'added_samples' contains the compound id's
+- 'arrange_in' is unknown information
+- 'properties' is unknown information
+
+An overview of first 10 columns of data stored in 'samples'. In the first two columns are the id's and names of the compounds.
+
+```{r}
+prs_data$samples[1:10]
+```
+
+
+Information about the individual wells is stored in several data frames under prs_data\$wells\$samples_metadata. Each data frame contains the wells information for 1 compound and is named after the id of that compound. 
+
+```{r}
+names(prs_data$wells$samples_metadata)
+```
+
+A sample of compound 41, which we know from the samples data represents '17AAG'.
+
+```{r}
+head(prs_data$wells$samples_metadata["41"])
+```
+
+## Prepare data for ic50
+
+Reorganise samples_metadata.
+
+Assumptions:
+
+- prs_data\$wells\$coordinates is in the same order as the samples_metadata data frames, hence we can column bind them.
+- if samples_metadata concentration data is NA the other columns also do not hold valuable information, hence we can filter by it.
+- if we filter concentration for NA all stocks data left is numeric
+- if the serial_factor column is there then it is always a data frame with a value and symbol column with equal length.
+
+```{r}
+# PREPARE each compound data frame separately
+dfs <- lapply(X   = prs_data$wells$samples_metadata, 
+              FUN = function(d) { 
+                # Add coordinates before filter
+                d$coordinates <- prs_data$wells$coordinates
+                # Serial_factor is a nested dataframe, unnest it
+                if ("serial_factor" %in% names(d)) {
+                  d$comp_serial_factor_value  <- d$serial_factor$value
+                  d$comp_serial_factor_symbol <- d$serial_factor$symbol
+                  d$serial_factor <- NULL
+                }
+                # Filter empty rows
+                d <- d[!is.na(d$concentration), ]
+                # as.numeric stocks now that only numreic data remains
+                d$stocks <- as.numeric(d$stocks)
+                
+                d
+              })
+
+# SUBSET the compound columns
+nc   <- vapply(X         = dfs, 
+               FUN       = ncol, 
+               FUN.VALUE = numeric(1)) == 5
+
+# BIND ROWS
+comp <- Reduce(f = rbind, 
+               x = dfs[nc])
+names(comp)[1:2] <- paste("comp", names(comp)[1:2], sep = "_")
+
+
+# ASSUMPTION: THERE CAN ONLY BE ONE INGREDIENT
+df <- merge(dfs[!nc][[1]], comp, by.x = "coordinates", by.y = "coordinates")
+
+# TEST: INGREDIENT AND COMPOUND SAME LENGTH
+nrow(df) == nrow(dfs[!nc][[1]])
+nrow(df) == nrow(comp)
+
+# TEST: NO DUPLICATES IN COORDINATES
+length(unique(df$coordinates)) == nrow(df)
+
+# ADD: compound names
+compound_names        <- prs_data$samples$name
+names(compound_names) <- as.character(prs_data$samples$id)
+df$comp_name          <- unname(compound_names[as.character(df$comp_stocks)])
+
+# ADD row and col for printing
+df$row <- vapply(substr(df$coordinates, 1, 1), function(c) { which(c == LETTERS) }, FUN.VALUE = numeric(1))
+df$col <- as.numeric(gsub("[^0-9.-]+", "", df$coordinates))
+
+# ARRANGE: by row and col
+df <- df[order( df[,"row"], df[,"col"] ),]
+
+head(df, 20)
+```
+
+## Write measure file
+
+```{r}
+# ASSUMPTION: 1 compound per row
+# CHECK: does it require equal columns per row
+measure <- lapply(X   = unique(df$row),
+                  FUN = function(r) {
+                    d      <- df[df$row == r, ]
+                    name   <- paste0('"', unique(d$comp_name)[1], '"')
+                    coords <- paste0('"', d$row, ',', d$col, '"')
+                    c(name, coords)
+                  })
+names(measure) <- paste0("row", seq_along(measure))
+measure        <- as.data.frame(t(as.data.frame(measure)))
+
+write.table(x         = measure, 
+            file      = "measure_from_api.txt",
+            append    = FALSE, 
+            sep       = "\t", 
+            row.names = FALSE, 
+            col.names = FALSE, 
+            quote     = FALSE)
+```
+
+## Write dilution file
+
+```{r}
+# ASSUMPTION: 1 compound per row
+# CHECK: does it require equal columns per row
+dilution <- lapply(X   = unique(df$row),
+                   FUN = function(r) {
+                     d      <- df[df$row == r, ]
+                     name   <- paste0('"', unique(d$comp_name)[1], '"')
+                     coords <- paste0('"', d$comp_concentration, '"')
+                     c(name, coords)
+                   })
+names(dilution) <- paste0("row", seq_along(dilution))
+dilution        <- as.data.frame(t(as.data.frame(dilution)))
+
+write.table(x         = dilution, 
+            file      = "dilution_from_api.txt",
+            append    = FALSE, 
+            sep       = "\t", 
+            row.names = FALSE, 
+            col.names = FALSE, 
+            quote     = FALSE)
+```
+
+# Write control file
+
+```{r}
+cntrl <- prs_data$wells[c("control", "coordinates")]
+cntrl <- cntrl[cntrl$control, ]
+
+# ADD row and col for printing
+cntrl$row <- vapply(substr(cntrl$coordinates, 1, 1), function(c) { which(c == LETTERS) }, FUN.VALUE = numeric(1))
+cntrl$col <- as.numeric(gsub("[^0-9.-]+", "", cntrl$coordinates))
+
+# ADD compound name
+# ASSUMTION: each row has only 1 compound name
+temp                  <- unique(df[c("comp_name", "row")])
+compound_names        <- temp$comp_name
+names(compound_names) <- as.character(temp$row)
+cntrl$comp_name       <- unname(compound_names[as.character(cntrl$row)])
+
+# ASSUMPTION: 1 compound per row
+# CHECK: does it require equal columns per row
+control <- lapply(X   = unique(cntrl$row),
+                  FUN = function(r) {
+                    d      <- df[cntrl$row == r, ]
+                    name   <- paste0('"', unique(d$comp_name)[1], '"')
+                    coords <- paste0('"', d$row, ',', d$col, '"')
+                    c(name, coords)
+                  })
+names(control) <- paste0("row", seq_along(control))
+control        <- as.data.frame(t(as.data.frame(control)))
+
+write.table(x         = control, 
+            file      = "control_from_api.txt",
+            append    = FALSE, 
+            sep       = "\t", 
+            row.names = FALSE, 
+            col.names = FALSE, 
+            quote     = FALSE)
+```
+
+
+
+
+
+
+
+
+
+
+# OLD STUFF
+
+```{r}
+# comp_id <- names(prs_data$wells$samples_metadata)
 ```
 
 ```{r}
-hts.96(indir     = paste0(dir, "A549"),
-       plates    = 2,
-       measure   = paste0(dir, "mpi384_measure.txt"),
-       control   = paste0(dir, "mpi384_control.txt"),
-       dilution  = paste0(dir, "mpi384_dilution.txt"),
-       inhib     = NULL,
-       normalize = "single",
-       graphics  = "single",
-       outdir    = paste0(dir, "A549-output"))
+# df <- mapply(prs_data$wells$samples_metadata, 
+#              comp_id,
+#              FUN = function(d, c) { 
+#                names(d) <- paste(names(d), c, sep = "_") 
+#                d
+#              })
+# df <- Reduce(cbind, df)
+# View(df)
 ```
 
 
 
 
+
+
+```{r}
+head(prs_data$wells$samples_metadata[["41"]], 30)
+```
+
+```{r}
+head(prs_data$wells$samples_metadata[["41"]], 30)
+```
+
+
+
+
+
+
+
+```{r}
+names(prs_data)
+```
+
+```{r}
+names(prs_data$wells)
+names(prs_data$samples)
+```
+
+```{r}
+prs_data[3:6]
+```
+
+
+```{r}
+prs_data$samples
+```
+
+```{r}
+head(prs_data$wells)
+```
+
+
+```{r}
+str(prs_data)
+```
+
+
+
+
+```{r}
+substr(parsed$data, 1, 3000)
+```
+
+
+```{r}
+substr(parsed$data, 1, 1000)
+```
 
 
 

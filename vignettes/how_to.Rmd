@@ -44,8 +44,9 @@ compensation
 ```
 
 ```{r}
-up_0 <- labguru_upload_dataset(dataset     = compensation,
-                               name        = "compensation")
+# HAS THE API FOR DATASET CHANGED ALREADY? BECAUSE IT SEEMS THIS FUNCTION BROKE.
+up_0 <- labguru_upload_dataset(dataset = compensation,
+                               name    = paste0("compensation", date()))
 up_0
 ```
 
@@ -70,6 +71,7 @@ Upload a R script
 ```{r}
 up_1 <- labguru_upload_file(file  = "../data-raw/sample_upload_script.R", 
                             title = "My R script")
+up_1
 ```
 
 
