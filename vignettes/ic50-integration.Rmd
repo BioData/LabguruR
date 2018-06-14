@@ -30,16 +30,19 @@ Example of running the 384 wells analysis with local files.
 ```{r}
 dir <- "../data-raw/ic50/experiment-001/"
 
-hts.384(indir     = paste0(dir, "Files"),
-        plates    = 2,
-        measure   = paste0(dir, "Suppl-files/mpi384_measure.txt"),
-        control   = paste0(dir, "Suppl-files/mpi384_control.txt"),
-        dilution  = paste0(dir, "Suppl-files/mpi384_dilution.txt"),
-        inhib     = rep(0.5,7),
-        outdir    = paste0(dir, "Output"),
-        normalize = "mean",
-        graphics  = "single")
+r <- hts.384(indir     = paste0(dir, "Files"),
+             plates    = 2,
+             measure   = paste0(dir, "Suppl-files/mpi384_measure.txt"),
+             control   = paste0(dir, "Suppl-files/mpi384_control.txt"),
+             dilution  = paste0(dir, "Suppl-files/mpi384_dilution.txt"),
+             inhib     = rep(0.5,7),
+             outdir    = paste0(dir, "Output"),
+             normalize = "mean",
+             graphics  = "single")
+class(r)
+r
 ```
+
 
 # Downloading plates data from a Labguru server
 
@@ -109,7 +112,7 @@ names(prs_data)
 ```
 
 - 'wells' contains the measure, dilution and control data
-- 'samples' contains information on the compounds
+- 'samples' contains information on the cell lines and compounds
 - 'added_samples' contains the compound id's
 - 'arrange_in' is unknown information
 - 'properties' is unknown information
@@ -144,6 +147,7 @@ Assumptions:
 - if we filter concentration for NA all stocks data left is numeric
 - if the serial_factor column is there then it is always a data frame with a value and symbol column with equal length.
 
+
 ```{r}
 # PREPARE each compound data frame separately
 dfs <- lapply(X   = prs_data$wells$samples_metadata, 
@@ -163,37 +167,51 @@ dfs <- lapply(X   = prs_data$wells$samples_metadata,
                 
                 d
               })
+```
 
+```{r}
 # SUBSET the compound columns
-nc   <- vapply(X         = dfs, 
-               FUN       = ncol, 
-               FUN.VALUE = numeric(1)) == 5
+# ASSUMPTION: The column prs_data$samples$collection_name will be "Compounds" if it is a compound. Can't be missing or spelt differently 
+collection_names        <- prs_data$samples$collection_name
+names(collection_names) <- prs_data$samples$id
+nc <- collection_names[names(dfs)] == "Compounds"
+```
 
+```{r}
 # BIND ROWS
 comp <- Reduce(f = rbind, 
                x = dfs[nc])
 names(comp)[1:2] <- paste("comp", names(comp)[1:2], sep = "_")
+```
 
-
-# ASSUMPTION: THERE CAN ONLY BE ONE INGREDIENT
+```{r}
+# ASSUMPTION: THERE CAN ONLY BE ONE CELL LINE
 df <- merge(dfs[!nc][[1]], comp, by.x = "coordinates", by.y = "coordinates")
+```
 
-# TEST: INGREDIENT AND COMPOUND SAME LENGTH
+```{r}
+# TEST: CELL LINE AND COMPOUND SAME LENGTH
 nrow(df) == nrow(dfs[!nc][[1]])
 nrow(df) == nrow(comp)
 
 # TEST: NO DUPLICATES IN COORDINATES
 length(unique(df$coordinates)) == nrow(df)
+```
 
+```{r}
 # ADD: compound names
 compound_names        <- prs_data$samples$name
 names(compound_names) <- as.character(prs_data$samples$id)
 df$comp_name          <- unname(compound_names[as.character(df$comp_stocks)])
+```
 
+```{r}
 # ADD row and col for printing
 df$row <- vapply(substr(df$coordinates, 1, 1), function(c) { which(c == LETTERS) }, FUN.VALUE = numeric(1))
 df$col <- as.numeric(gsub("[^0-9.-]+", "", df$coordinates))
+```
 
+```{r}
 # ARRANGE: by row and col
 df <- df[order( df[,"row"], df[,"col"] ),]
 
@@ -215,6 +233,10 @@ measure <- lapply(X   = unique(df$row),
 names(measure) <- paste0("row", seq_along(measure))
 measure        <- as.data.frame(t(as.data.frame(measure)))
 
+measure
+```
+
+```{r}
 write.table(x         = measure, 
             file      = "measure_from_api.txt",
             append    = FALSE, 
@@ -239,6 +261,10 @@ dilution <- lapply(X   = unique(df$row),
 names(dilution) <- paste0("row", seq_along(dilution))
 dilution        <- as.data.frame(t(as.data.frame(dilution)))
 
+dilution
+```
+
+```{r}
 write.table(x         = dilution, 
             file      = "dilution_from_api.txt",
             append    = FALSE, 
@@ -249,6 +275,11 @@ write.table(x         = dilution,
 ```
 
 # Write control file
+
+```{r}
+head(cntrl, 6)
+```
+
 
 ```{r}
 cntrl <- prs_data$wells[c("control", "coordinates")]
@@ -269,7 +300,7 @@ cntrl$comp_name       <- unname(compound_names[as.character(cntrl$row)])
 # CHECK: does it require equal columns per row
 control <- lapply(X   = unique(cntrl$row),
                   FUN = function(r) {
-                    d      <- df[cntrl$row == r, ]
+                    d      <- cntrl[cntrl$row == r, ]
                     name   <- paste0('"', unique(d$comp_name)[1], '"')
                     coords <- paste0('"', d$row, ',', d$col, '"')
                     c(name, coords)
@@ -277,6 +308,10 @@ control <- lapply(X   = unique(cntrl$row),
 names(control) <- paste0("row", seq_along(control))
 control        <- as.data.frame(t(as.data.frame(control)))
 
+control
+```
+
+```{r}
 write.table(x         = control, 
             file      = "control_from_api.txt",
             append    = FALSE, 
