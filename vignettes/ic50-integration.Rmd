@@ -321,6 +321,29 @@ write.table(x         = control,
             quote     = FALSE)
 ```
 
+# ic50 analysis
+
+```{r}
+
+```
+
+
+## Store data
+
+```{r}
+
+```
+
+
+## Store images
+
+```{r}
+pdf_img <- magick::image_read_pdf("dose_response_curves.pdf")
+magick::image_info(pdf_img)
+magick::image_write(pdf_img[1], "test.png")
+```
+
+
 
 
 
