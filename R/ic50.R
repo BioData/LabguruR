@@ -1,17 +1,93 @@
 
+#' Title
+#'
+#' @param table 
+#' @param name 
+#' @param results_dir 
+#' @param img_pdf 
+#' @param server 
+#' @param token 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+labguru_ic50_upload <- function(table,
+                                name,
+                                results_dir,
+                                img_pdf,
+                                server = Sys.getenv("LABGURU_SERVER"), 
+                                token  = Sys.getenv("LABGURU_TOKEN")) {
+  
+  # check_arg_table(table)
+  # check_arg_name(name)
+  # check_arg_results_dir(results_dir)
+  # check_arg_img_pdf(img_pdf)
+  
+  fls <- list.files(results_dir)
+  
+  if (img_pdf == "img") {
+    fls <- fls[grepl(pattern = '.png$', x = fls)]
+  } else if (img_pdf == "img") {
+    fls <- fls[grepl(pattern = '.pdf$', x = fls)]
+  } else { stop("Results files must be pdf or images.") }
+  
+  rtn <- list()
+  
+  rtn$upl <- labguru_upload_dataset(dataset = table,
+                                    name    = name,
+                                    server  = server,
+                                    token   = token)
+  
+  titles <- gsub('^.*file\\s*|\\s*png.*$', '', fls)
+  for (i in seq_along(fls)) {
+    rtn[titles[i]] <- labguru_upload_visualization(file       = fls[i], 
+                                                   title      = titles[i],
+                                                   dataset_id = upl$id)
+  }
+  
+  rtn
+}
+
+#' ic50 Analysis
+#' 
+#' Download plate from labguru server and run ic50 analysis. 
+#'
+#' @param plate_id 
+#' @param indir 
+#' @param outdir_plate 
+#' @param outdir_results 
+#' @param plates 
+#' @param inhib 
+#' @param normalize 
+#' @param graphics 
+#' @param img_png 
+#' @param server 
+#' @param token 
+#'
+#' @return
+#' @export
+#' 
+#' @import ic50 
+#' @importFrom magick::image_read_pdf
+#' @importFrom magick::image_info
+#' @importFrom magick::image_write
+#'
+#' @examples
 labguru_ic50_analysis <- function(plate_id, 
-                                  indir     = ".",
-                                  outdir    = tempdir(check = FALSE),
-                                  plates    = 2,
-                                  inhib     = NULL,
-                                  normalize = "single",
-                                  graphics  = "mean",
-                                  img_pdf   = "img", # for img the magick package is required
-                                  server    = Sys.getenv("LABGURU_SERVER"), 
-                                  token     = Sys.getenv("LABGURU_TOKEN")) {
+                                  indir          = ".",
+                                  outdir_plate   = "./plate",
+                                  outdir_results = "./results",
+                                  plates         = 2,
+                                  inhib          = NULL,
+                                  normalize      = "single",
+                                  graphics       = "mean",
+                                  img_png        = TRUE, # for img the magick package is required
+                                  server         = Sys.getenv("LABGURU_SERVER"), 
+                                  token          = Sys.getenv("LABGURU_TOKEN")) {
   
   plate <- labguru_download_plate(plate  = plate_id, 
-                                  dir    = "./fls", #outdir,
+                                  dir    = outdir_plate,
                                   server = server, 
                                   token  = token)
   
@@ -22,7 +98,7 @@ labguru_ic50_analysis <- function(plate_id,
                          control   = paste0(plate$dir, "/control.txt"),
                          dilution  = paste0(plate$dir, "/dilution.txt"),
                          inhib     = inhib,
-                         outdir    = outdir,
+                         outdir    = outdir_results,
                          normalize = normalize,
                          graphics  = graphics)
   } else if (plate$length == 384) {
@@ -32,15 +108,15 @@ labguru_ic50_analysis <- function(plate_id,
                           control   = paste0(plate$dir, "/control.txt"),
                           dilution  = paste0(plate$dir, "/dilution.txt"),
                           inhib     = inhib,
-                          outdir    = outdir,
+                          outdir    = outdir_results,
                           normalize = normalize,
                           graphics  = graphics)
   } else {
     stop("Plate length is not 384 or 96. LabguruR is unable to process this")
   }
   
-  if (img_pdf == "img") {
-    pdf_img  <- magick::image_read_pdf(paste0(outdir, "dose_response_curves.pdf"))
+  if (img_png) {
+    pdf_img  <- magick::image_read_pdf(paste0(outdir_results, "/dose_response_curves.pdf"))
     img_info <- magick::image_info(pdf_img)
     
     # Test that img_info and rslt have the same length!
@@ -48,16 +124,19 @@ labguru_ic50_analysis <- function(plate_id,
       warning("Not the same number of images as results from the ic50 analysis. Returning pdf instead of images")
       img_pdf <- "pdf"
     } else {
-      img_info$title <- paste0("file ", rslt$first_file, ", compound ", rstl$compound)
-      for (i in seq_len(img_info$title)) {
+      img_info$title <- paste0("file ", rslt$first_file, ", compound ", rslt$compound)
+      for (i in seq_along(img_info$title)) {
         magick::image_write(pdf_img[i], 
-                            paste0(plate$dir, img_info$title[i], ".png"))
+                            paste0(outdir_results, "/", img_info$title[i], ".png"))
       }
         
     }
     
   }
   
+  list(result = rslt,
+       dir    = outdir_results,
+       img    = )
 }
 
 #' Labguru download plate
@@ -65,7 +144,7 @@ labguru_ic50_analysis <- function(plate_id,
 #' Download a plate's data and stores dilution, measure and control files in a folder or returns data frames.
 #'
 #' @param plate Single numeric indicating the plate id
-#' @param dir Single character indicating the folder to store the created files
+#' @param dir Single character indicating the directory to store the created files
 #' @param server A character string indicating the server URL
 #' @param token An access token for API authentication
 #'
@@ -80,7 +159,7 @@ labguru_ic50_analysis <- function(plate_id,
 #' labguru_download_plate(plate = 271)
 #' }
 labguru_download_plate <- function(plate, 
-                                   dir    = tempdir(),
+                                   dir    = "./plate",
                                    server = Sys.getenv("LABGURU_SERVER"), 
                                    token  = Sys.getenv("LABGURU_TOKEN")) {
   
@@ -90,6 +169,15 @@ labguru_download_plate <- function(plate,
   check_arg_server(server)
   check_arg_token(token)
 
+  
+  if (dir.exists(dir)) {
+    if (length(dir(path = dir, all.files = TRUE)) != 0) {
+      stop(paste0("Please remove or empty the '", dir, "' directory."))
+    }
+  } else {
+    dir.create(dir)
+  }
+  
   base_url <- server
   path     <- paste0("/api/v1/plates/", plate)
   query    <- paste0("token=", token)
@@ -125,22 +213,28 @@ labguru_download_plate <- function(plate,
   measure  <- ic50_create_measure_data(df)
   dilution <- ic50_create_dilution_data(df)
   control  <- ic50_create_control_data(df, prs_data$wells)
-  
-  write.table(measure, 
+
+  write.table(x         = measure, 
               file      = paste0(dir, "/measure.txt"),
-              row.names = FALSE,
-              col.names = FALSE,
-              sep       = "\t")
-  write.table(control, 
+              append    = FALSE, 
+              sep       = "\t", 
+              row.names = FALSE, 
+              col.names = FALSE, 
+              quote     = FALSE)
+  write.table(x         = control, 
               file      = paste0(dir, "/control.txt"),
-              row.names = FALSE,
-              col.names = FALSE,
-              sep       = "\t")
-  write.table(dilution, 
+              append    = FALSE, 
+              sep       = "\t", 
+              row.names = FALSE, 
+              col.names = FALSE, 
+              quote     = FALSE)
+  write.table(x         = dilution, 
               file      = paste0(dir, "/dilution.txt"),
-              row.names = FALSE,
-              col.names = FALSE,
-              sep       = "\t")
+              append    = FALSE, 
+              sep       = "\t", 
+              row.names = FALSE, 
+              col.names = FALSE, 
+              quote     = FALSE)
   
   # Return information
   invisible(list(dir      = dir,
