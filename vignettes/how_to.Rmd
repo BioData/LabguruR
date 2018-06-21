@@ -119,6 +119,8 @@ labguru_download_plate(plate = 271,
 This function downloads the plate using plate_id and stores those results in outdir_plate. It then looks for the data files in the indir directory and performes the ic50 analysis using plates, inhib, normalize and graphics. It stores results in outdir_results directory. If img_png is true it also stores the images from the dose_response_curves pdf as single png images.
 
 ```{r}
+library(ic50) # ic50 library has to be loaded otherwise you get errors with '.lastxx_measure' files
+
 labguru_ic50_analysis(plate_id, 
                       indir          = ".",
                       outdir_plate   = "./plate",
