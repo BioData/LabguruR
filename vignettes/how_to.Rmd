@@ -136,9 +136,10 @@ ic50
 ## Upload ic50 results to Labguru
 
 ```{r}
-labguru_ic50_upload(table       = ic50$result,
-                    name        = paste0("data_", gsub("[^[:alnum:]]","", date())),
-                    results_dir = ic50$dir,
-                    img_pdf     = "img")
+up_5 <- labguru_ic50_upload(table       = ic50$result,
+                            name        = paste0("data_", gsub("[^[:alnum:]]","", date())),
+                            results_dir = ic50$dir,
+                            img_pdf     = "img")
+up_5
 ```
 
