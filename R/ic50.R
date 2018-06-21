@@ -116,6 +116,8 @@ labguru_ic50_analysis <- function(plate_id,
   }
   
   if (img_png) {
+    message("Storing separate image files from pdf. This may take some time...")
+    
     pdf_img  <- magick::image_read_pdf(paste0(outdir_results, "/dose_response_curves.pdf"))
     img_info <- magick::image_info(pdf_img)
     
@@ -131,12 +133,11 @@ labguru_ic50_analysis <- function(plate_id,
       }
         
     }
-    
-  }
+  } else { img_info$title <- NULL }
   
   list(result = rslt,
        dir    = outdir_results,
-       img    = )
+       img    = img_info$title)
 }
 
 #' Labguru download plate
