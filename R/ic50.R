@@ -69,9 +69,9 @@ labguru_ic50_upload <- function(table,
 #' @export
 #' 
 #' @import ic50 
-#' @importFrom magick::image_read_pdf
-#' @importFrom magick::image_info
-#' @importFrom magick::image_write
+#' @importFrom magick image_read_pdf
+#' @importFrom magick image_info
+#' @importFrom magick image_write
 #'
 #' @examples
 labguru_ic50_analysis <- function(plate_id, 

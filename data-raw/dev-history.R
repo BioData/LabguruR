@@ -4,3 +4,5 @@
 
 
 usethis::use_vignette("ic50 integration")
+
+devtools::document()
