@@ -76,8 +76,7 @@ labguru_upload_dataset <- function(dataset,
   
   # invisible(TRUE)
   # Return ID
-  list(id  = parsed$id,
-       url = parsed$api_url)
+  list(id = parsed$dataset_id)
 }
 
 
