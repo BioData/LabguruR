@@ -147,7 +147,7 @@ labguru_list_datasets <- function(page     = 1,
   
   # Subset primary elements that can't be NULL
   if (get_cols == "limited") {
-    parsed[c("id", "name", "api_url")]
+    parsed[c("id", "name", "description", "api_url")]
   } else {
     parsed
   }
