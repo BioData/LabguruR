@@ -121,14 +121,24 @@ This function downloads the plate using plate_id and stores those results in out
 ```{r}
 library(ic50) # ic50 library has to be loaded otherwise you get errors with '.lastxx_measure' files
 
-labguru_ic50_analysis(plate_id, 
-                      indir          = ".",
-                      outdir_plate   = "./plate",
-                      outdir_results = "./results",
-                      plates         = 2,
-                      inhib          = rep(0.5,7),
-                      normalize      = "mean",
-                      graphics       = "single",
-                      img_png        = TRUE)
+ic50 <- labguru_ic50_analysis(plate_id       = 271, 
+                              indir          = ".",
+                              outdir_plate   = "./plate",
+                              outdir_results = "./results",
+                              plates         = 2,
+                              inhib          = rep(0.5,7),
+                              normalize      = "mean",
+                              graphics       = "single",
+                              img_png        = TRUE)
+ic50
+```
+
+## Upload ic50 results to Labguru
+
+```{r}
+labguru_ic50_upload(table       = ic50$result,
+                    name        = paste0("data_", gsub("[^[:alnum:]]","", date())),
+                    results_dir = ic50$dir,
+                    img_pdf     = "img")
 ```
 

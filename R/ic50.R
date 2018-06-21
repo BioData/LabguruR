@@ -39,11 +39,13 @@ labguru_ic50_upload <- function(table,
                                     server  = server,
                                     token   = token)
   
-  titles <- gsub('^.*file\\s*|\\s*png.*$', '', fls)
+  titles <- substr(fls, 1, nchar(fls) - 4)
+  # titles <- gsub('^.*file\\s*|\\s*png.*$', '', fls)
   for (i in seq_along(fls)) {
-    rtn[titles[i]] <- labguru_upload_visualization(file       = fls[i], 
+    rtn[titles[i]] <- labguru_upload_visualization(file       = paste0(results_dir, "/", fls[i]), 
                                                    title      = titles[i],
-                                                   dataset_id = upl$id)
+                                                   name       = titles[i],
+                                                   dataset_id = rtn$upl$id)
   }
   
   rtn
