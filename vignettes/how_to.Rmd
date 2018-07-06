@@ -143,3 +143,36 @@ up_5 <- labguru_ic50_upload(table       = ic50$result,
 up_5
 ```
 
+# Experiment
+
+## Project
+
+List all projects
+
+```{r}
+projects <- labguru_list_projects(get_cols = "limited")
+projects
+```
+
+Download project information
+
+```{r}
+project_1 <- labguru_downlaod_project(project_id = 1)
+project_1
+```
+
+Start new project
+
+```{r}
+project_new <- labguru_upload_project(title      = "My new project",
+                                      desription = "This project is an analysis of ...",
+                                      return     = "all")
+project_new
+```
+
+
+
+
+
+
+
