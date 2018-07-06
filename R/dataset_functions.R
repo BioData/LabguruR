@@ -9,7 +9,7 @@
 #' @param server A character string indicating the server URL
 #' @param token An access token for API authentication
 #'
-#' @return NULL
+#' @return dataset_id
 #' @export
 #'
 #' @import httr
@@ -178,34 +178,41 @@ labguru_list_datasets <- function(page     = 1,
 labguru_download_dataset <- function(dataset_id,
                                      server = Sys.getenv("LABGURU_SERVER"), 
                                      token  = Sys.getenv("LABGURU_TOKEN")) {
-  # GET /api/v1/datasets/1.json?token=YOUR_TOKEN_HERE
-  # URL
-  base_url <- server
-  path     <- paste0("/api/v1/datasets/", dataset_id)
-  query    <- paste0("token=", token)
-  
-  url <- httr::modify_url(url   = base_url, 
-                          path  = path,
-                          query = query)
-  
-  resp <- httr::GET(url)
-  
-  # Expect resp to be JSON 
-  if (httr::http_type(resp) != "application/json") {
-    stop("API did not return JSON", call. = FALSE)
-  }
-  
-  # Parse without simplifaction for consistency
-  parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), 
-                               simplifyVector    = FALSE, 
-                               simplifyDataFrame = TRUE, 
-                               flatten           = TRUE)
-  
-  # check for request error
-  if (httr::http_error(resp)) {
-    stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
-  }
+
+  parsed <- labguru_get_by_id(type   = "datasets",
+                              id     = dataset_id,
+                              server = server,
+                              token  = token)
   
   parsed$vectors
+    
+  # # URL
+  # base_url <- server
+  # path     <- paste0("/api/v1/datasets/", dataset_id)
+  # query    <- paste0("token=", token)
+  # 
+  # url <- httr::modify_url(url   = base_url, 
+  #                         path  = path,
+  #                         query = query)
+  # 
+  # resp <- httr::GET(url)
+  # 
+  # # Expect resp to be JSON 
+  # if (httr::http_type(resp) != "application/json") {
+  #   stop("API did not return JSON", call. = FALSE)
+  # }
+  # 
+  # # Parse without simplifaction for consistency
+  # parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), 
+  #                              simplifyVector    = FALSE, 
+  #                              simplifyDataFrame = TRUE, 
+  #                              flatten           = TRUE)
+  # 
+  # # check for request error
+  # if (httr::http_error(resp)) {
+  #   stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
+  # }
+  # 
+  # parsed$vectors
 }
 
