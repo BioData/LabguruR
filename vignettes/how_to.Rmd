@@ -150,29 +150,82 @@ up_5
 List all projects
 
 ```{r}
-projects <- labguru_list_projects(get_cols = "limited")
+projects <- labguru_list_projects(get_cols = "all")
 projects
 ```
 
 Download project information
 
 ```{r}
-project_1 <- labguru_downlaod_project(project_id = 1)
+project_1 <- labguru_get_project(project_id = 1)
 project_1
 ```
 
 Start new project
 
 ```{r}
-project_new <- labguru_upload_project(title      = "My new project",
-                                      desription = "This project is an analysis of ...",
-                                      return     = "all")
+project_new <- labguru_add_project(title       = "My new project",
+                                   description = "This project is an analysis of ...",
+                                   return      = "all")
 project_new
 ```
 
 
+## Folder
+
+List all folders
+
+```{r}
+folders <- labguru_list_folders(project_id = 91, # project_id = NULL for all folders in all projects (default)
+                                get_cols   = "all")
+folders
+```
+
+Download folder information
+
+```{r}
+folder_1 <- labguru_get_folder(folder_id = 31)
+folder_1
+```
+
+Start new folder
+
+```{r}
+folder_new <- labguru_add_folder(title       = "My new folder",
+                                 project_id  = 91,
+                                 description = "This folder is a test from LabguruR",
+                                 return      = "all")
+folder_new
+```
+
+
+## Experiment
+
+List all experiments
 
 
 
+```{r}
+experiments <- labguru_list_experiments(folder_id  = 1,
+                                        get_cols   = "limited")
+experiments
+```
 
+Download experiment information
+
+```{r}
+experiment_1 <- labguru_get_experiment(experiment_id = 31)
+experiment_1
+```
+
+Start new experiment
+
+```{r}
+experiment_new <- labguru_add_experiment(title       = "My new experiment",
+                                         project_id  = 91,
+                                         folder_id   = 41,
+                                         description = "This experiment is a test from LabguruR",
+                                         return      = "all")
+experiment_new
+```
 

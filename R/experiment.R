@@ -87,8 +87,7 @@ labguru_add_experiment <- function(title,
 #' 
 #' This function returns information of the available projects in a data frame.
 #'
-#' @param folder_id numeric(1) The folder id for which to list experiments, NULL (default) returns for all chosen projects. The 'project_id' argument is ignored when folder_id is not NULL.
-#' @param project_id numeric(1) The project id for which to list experiments, NULL (default) returns for all projects
+#' @param folder_id numeric(1) The folder id for which to list experiments. 
 #' @param page numeric(1) representing the page number of data to request. Limited data can be return in 1 request, incrementally try higher page numbers for more experiments
 #' @param get_cols character(1) either 'limited' or 'all' to return a subset or all of the information regarding the experiments
 #' @param server character(1) indicating the server URL
@@ -103,24 +102,21 @@ labguru_add_experiment <- function(title,
 #' @examples
 #' \dontrun{
 #' # The following example shows limited information for experiments in all projects and folders (default)
-#' labguru_list_experiments(project_id = NULL, 
-#'                          folder_id = NULL, 
+#' labguru_list_experiments(folder_id = NULL, 
 #'                          page = 1, 
 #'                          get_cols = "limited")
 #' }
-labguru_list_experiments <- function(folder_id  = NULL,
-                                     project_id = NULL,
-                                     page       = 1,
-                                     get_cols   = "limited",
-                                     server     = Sys.getenv("LABGURU_SERVER"), 
-                                     token      = Sys.getenv("LABGURU_TOKEN")) {
+labguru_list_experiments <- function(folder_id = NULL,
+                                     page      = 1,
+                                     get_cols  = "limited",
+                                     server    = Sys.getenv("LABGURU_SERVER"), 
+                                     token     = Sys.getenv("LABGURU_TOKEN")) {
   
   check_arg_page(page)
   check_arg_server(server)
   check_arg_token(token)
   check_arg_get_cols(get_cols, c("limited", "all"))
   
-  # CHECK ARG PROJECT_ID (can be null)
   # CHECK ARG FOLDER_ID (can be null)
   
   # URL
@@ -156,16 +152,22 @@ labguru_list_experiments <- function(folder_id  = NULL,
     return(NULL)
   }
   
-  # Filter by folder id, if folder id is NULL filter by project id
+  # folder_id not available in parsed result so find experiment_ids from a get_folder request
   if (!is.null(folder_id)) {
-    parsed <- parsed[parsed$folder_id == folder_id, ]
-  } else if (!is.null(project_id)) {
-    parsed <- parsed[parsed$project_id == project_id, ]
+    exp_id <- labguru_get_folder(folder_id = folder_id, server = server, token = token)
+    exp_id <- exp_id$experiments$id
+      
+    parsed <- parsed[parsed$id %in% exp_id, ]
+    
+    if (nrow(parsed) == 0) {
+      message("No experiments were available for this request")
+      return(NULL)
+    }
   }
   
   # Subset primary elements that can't be NULL
   if (get_cols == "limited") {
-    parsed[c("id", "project_id", "title", "description", "api_url")]
+    parsed[c("id", "title", "api_url")]
   } else { 
     parsed
   } 

@@ -50,8 +50,7 @@ labguru_add_folder <- function(title,
   
   # Body
   body <- list("token"             = token,
-               "project_id"        = project_id,
-               # "item[project_id]"  = project_id,
+               "item[project_id]"  = project_id,
                "item[title]"       = title, 
                "item[description]" = description) 
   
