@@ -214,7 +214,7 @@ experiments
 Download experiment information
 
 ```{r}
-experiment_1 <- labguru_get_experiment(experiment_id = 31)
+experiment_1 <- labguru_get_experiment(experiment_id = 1)
 experiment_1
 ```
 
