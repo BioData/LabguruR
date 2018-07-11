@@ -42,11 +42,8 @@ labguru_add_folder <- function(title,
   stopifnot(return %in% c('id', 'all'))
   
   # URL
-  base_url <- server
-  path     <- "/api/v1/milestones"
-  
-  url <- httr::modify_url(url   = base_url, 
-                          path  = path)
+  url <- httr::modify_url(url   = server, 
+                          path  = "/api/v1/milestones")
   
   # Body
   body <- list("token"             = token,
@@ -54,22 +51,26 @@ labguru_add_folder <- function(title,
                "item[title]"       = title, 
                "item[description]" = description) 
   
-  # Post
-  resp <- httr::POST(url    = url, 
-                     body   = body)
+  # POST
+  parsed <- labguru_post_item(url  = url,
+                              body = body)
   
-  # Expect resp to be JSON 
-  if (httr::http_type(resp) != "application/json") {
-    stop("API did not return JSON", call. = FALSE)
-  }
-  
-  # Parse without simplifaction for consistency
-  parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), simplifyVector = FALSE)
-  
-  # check for request error
-  if (httr::http_error(resp)) {
-    stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
-  }
+  # # Post
+  # resp <- httr::POST(url    = url, 
+  #                    body   = body)
+  # 
+  # # Expect resp to be JSON 
+  # if (httr::http_type(resp) != "application/json") {
+  #   stop("API did not return JSON", call. = FALSE)
+  # }
+  # 
+  # # Parse without simplifaction for consistency
+  # parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), simplifyVector = FALSE)
+  # 
+  # # check for request error
+  # if (httr::http_error(resp)) {
+  #   stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
+  # }
   
   # return information
   if (return == "id") {
@@ -113,35 +114,16 @@ labguru_list_folders <- function(project_id = NULL,
   # CHECK ARG PROJECT_ID
   
   # URL
-  base_url <- server
-  path     <- "/api/v1/milestones"
-  query    <- paste0("token=", token, 
-                     "&page=", page)
+  url <- httr::modify_url(url   = server, 
+                          path  = "/api/v1/milestones",
+                          query = paste0("token=", token, 
+                                         "&page=", page))
   
-  url <- httr::modify_url(url   = base_url, 
-                          path  = path,
-                          query = query)
+  parsed <- labguru_list_items(url)
   
-  resp <- httr::GET(url)
-  
-  # Expect resp to be JSON 
-  if (httr::http_type(resp) != "application/json") {
-    stop("API did not return JSON", call. = FALSE)
-  }
-  
-  # Parse with simplifaction to dataframe
-  parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), 
-                               simplifyVector    = FALSE, 
-                               simplifyDataFrame = TRUE, 
-                               flatten           = TRUE)
-  
-  # check for request error
-  if (httr::http_error(resp)) {
-    stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
-  }
-  
+  # Empty pages return and empty list 
   if (length(parsed) == 0) {
-    message("No folders were available for this request")
+    message("No experiments were available for this request")
     return(NULL)
   }
   

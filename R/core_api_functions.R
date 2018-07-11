@@ -80,7 +80,11 @@ labguru_post_item <- function(url,
   
   # Post
   resp <- httr::POST(url    = url, 
-                     body   = body)
+                     body   = body,
+                     if (!is.null(encode)) encode = encode,
+                     if (!is.null(encode)) config = config,
+                     if (!is.null(encode)) handle = handle
+  )
   
   # Expect resp to be JSON 
   if (httr::http_type(resp) != "application/json") {
@@ -95,5 +99,52 @@ labguru_post_item <- function(url,
     stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
   }
   
+  parsed
+}
+
+
+
+#' Labguru list items
+#' 
+#' List 
+#'
+#' @param url 
+#' @param body 
+#' @param encode 
+#' @param config 
+#' @param handle 
+#'
+#' @return parsed object
+#'
+#' @import httr
+#' @importFrom jsonlite fromJSON
+#' 
+#' @examples
+labguru_list_items <- function(url,
+                               config = NULL,
+                               handle = NULL) {
+  
+  # Post
+  resp <- httr::GET(url = url, 
+                    if (!is.null(encode)) config = config,
+                    if (!is.null(encode)) handle = handle
+  )
+  
+  # Expect resp to be JSON 
+  if (httr::http_type(resp) != "application/json") {
+    stop("API did not return JSON", call. = FALSE)
+  }
+  
+  # Parse with simplifaction to dataframe
+  parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), 
+                               simplifyVector    = FALSE, 
+                               simplifyDataFrame = TRUE, 
+                               flatten           = TRUE)
+  
+  # check for request error
+  if (httr::http_error(resp)) {
+    stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
+  }
+
   parsed
 }

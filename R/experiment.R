@@ -45,11 +45,8 @@ labguru_add_experiment <- function(title,
   stopifnot(return %in% c('id', 'all'))
   
   # URL
-  base_url <- server
-  path     <- "/api/v1/experiments"
-  
-  url <- httr::modify_url(url   = base_url, 
-                          path  = path)
+  url <- httr::modify_url(url   = server, 
+                          path  = "/api/v1/experiments")
   
   # Body
   body <- list("token"              = token,
@@ -58,22 +55,26 @@ labguru_add_experiment <- function(title,
                "item[title]"        = title, 
                "item[description]"  = description) 
   
-  # Post
-  resp <- httr::POST(url    = url, 
-                     body   = body)
+  # POST
+  parsed <- labguru_post_item(url  = url,
+                              body = body)
   
-  # Expect resp to be JSON 
-  if (httr::http_type(resp) != "application/json") {
-    stop("API did not return JSON", call. = FALSE)
-  }
-  
-  # Parse without simplifaction for consistency
-  parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), simplifyVector = FALSE)
-  
-  # check for request error
-  if (httr::http_error(resp)) {
-    stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
-  }
+  # # Post
+  # resp <- httr::POST(url    = url, 
+  #                    body   = body)
+  # 
+  # # Expect resp to be JSON 
+  # if (httr::http_type(resp) != "application/json") {
+  #   stop("API did not return JSON", call. = FALSE)
+  # }
+  # 
+  # # Parse without simplifaction for consistency
+  # parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), simplifyVector = FALSE)
+  # 
+  # # check for request error
+  # if (httr::http_error(resp)) {
+  #   stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
+  # }
   
   # return information
   if (return == "id") {
@@ -85,7 +86,7 @@ labguru_add_experiment <- function(title,
 
 #' Labguru list experiments
 #' 
-#' This function returns information of the available projects in a data frame.
+#' This function returns information of the available experiments in a data frame.
 #'
 #' @param folder_id numeric(1) The folder id for which to list experiments. 
 #' @param page numeric(1) representing the page number of data to request. Limited data can be return in 1 request, incrementally try higher page numbers for more experiments
@@ -101,10 +102,10 @@ labguru_add_experiment <- function(title,
 #' 
 #' @examples
 #' \dontrun{
-#' # The following example shows limited information for experiments in all projects and folders (default)
+#' # The following example shows limited information for experiments in all folders (default)
 #' labguru_list_experiments(folder_id = NULL, 
-#'                          page = 1, 
-#'                          get_cols = "limited")
+#'                          page      = 1, 
+#'                          get_cols  = "limited")
 #' }
 labguru_list_experiments <- function(folder_id = NULL,
                                      page      = 1,
@@ -120,33 +121,14 @@ labguru_list_experiments <- function(folder_id = NULL,
   # CHECK ARG FOLDER_ID (can be null)
   
   # URL
-  base_url <- server
-  path     <- "/api/v1/experiments"
-  query    <- paste0("token=", token, 
-                     "&page=", page)
+  url <- httr::modify_url(url   = server, 
+                          path  = "/api/v1/experiments",
+                          query = paste0("token=", token, 
+                                         "&page=", page))
   
-  url <- httr::modify_url(url   = base_url, 
-                          path  = path,
-                          query = query)
+  parsed <- labguru_list_items(url)
   
-  resp <- httr::GET(url)
-  
-  # Expect resp to be JSON 
-  if (httr::http_type(resp) != "application/json") {
-    stop("API did not return JSON", call. = FALSE)
-  } 
-  
-  # Parse with simplifaction to dataframe
-  parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), 
-                               simplifyVector    = FALSE, 
-                               simplifyDataFrame = TRUE, 
-                               flatten           = TRUE)
-  
-  # check for request error
-  if (httr::http_error(resp)) {
-    stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
-  } 
-  
+  # Empty pages return and empty list 
   if (length(parsed) == 0) {
     message("No experiments were available for this request")
     return(NULL)
@@ -204,33 +186,17 @@ labguru_get_experiment <- function(experiment_id,
                               token  = token)
   
   parsed
-  
-  # # URL
-  # base_url <- server
-  # path     <- paste0("/api/v1/experiments/", experiment_id)
-  # query    <- paste0("token=", token)
-  # 
-  # url <- httr::modify_url(url   = base_url, 
-  #                         path  = path,
-  #                         query = query)
-  # 
-  # resp <- httr::GET(url)
-  # 
-  # # Expect resp to be JSON 
-  # if (httr::http_type(resp) != "application/json") {
-  #   stop("API did not return JSON", call. = FALSE)
-  # }
-  # 
-  # # Parse without simplifaction for consistency
-  # parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), 
-  #                              simplifyVector    = FALSE, 
-  #                              simplifyDataFrame = TRUE, 
-  #                              flatten           = TRUE)
-  # 
-  # # check for request error
-  # if (httr::http_error(resp)) {
-  #   stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
-  # }
-  # 
-  # parsed
 }
+
+
+
+
+labguru_add_attachment_to_experiment <- function() {
+  
+  
+  
+}
+
+
+
+
