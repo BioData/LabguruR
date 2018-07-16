@@ -80,8 +80,8 @@ labguru_post_item <- function(url,
   resp <- httr::POST(url    = url, 
                      body   = body,
                      if (!is.null(encode)) encode = encode,
-                     if (!is.null(encode)) config = config,
-                     if (!is.null(encode)) handle = handle
+                     if (!is.null(config)) config = config,
+                     if (!is.null(handle)) handle = handle
   )
   
   # Expect resp to be JSON 
@@ -124,8 +124,8 @@ labguru_list_items <- function(url,
   
   # Post
   resp <- httr::GET(url = url, 
-                    if (!is.null(encode)) config = config,
-                    if (!is.null(encode)) handle = handle
+                    if (!is.null(config)) config = config,
+                    if (!is.null(handle)) handle = handle
   )
   
   # Expect resp to be JSON 
