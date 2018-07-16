@@ -9,13 +9,13 @@ labguru_download_plate(plate, dir = "./plate",
   token = Sys.getenv("LABGURU_TOKEN"))
 }
 \arguments{
-\item{plate}{Single numeric indicating the plate id}
+\item{plate}{numeric(1) indicating the plate id}
 
-\item{dir}{Single character indicating the directory to store the created files}
+\item{dir}{character(1) indicating the directory to store the created files}
 
-\item{server}{A character string indicating the server URL}
+\item{server}{character(1) string indicating the server URL}
 
-\item{token}{An access token for API authentication}
+\item{token}{character(1) access token for API authentication}
 }
 \value{
 invisible, list() with dir name, and dilution, measure nd control data frames

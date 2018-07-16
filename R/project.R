@@ -27,14 +27,11 @@ labguru_add_project <- function(title,
                                 token       = Sys.getenv("LABGURU_TOKEN")) {
   
   # Test arguments
-  check_arg_title(title)
-  check_arg_description(description)
+  check_arg_single_character(title, null = FALSE)
+  check_arg_single_character(description, null = TRUE)
+  check_arg_char_opts(return, opts = c("id", "all"), null = FALSE)
   check_arg_server(server)
   check_arg_token(token)
-  
-  stopifnot(is.character(return))
-  stopifnot(length(return) == 1)
-  stopifnot(return %in% c('id', 'all'))
   
   # URL
   url <- httr::modify_url(url   = server, 
@@ -98,10 +95,10 @@ labguru_list_projects <- function(page     = 1,
                                   server   = Sys.getenv("LABGURU_SERVER"), 
                                   token    = Sys.getenv("LABGURU_TOKEN")) {
   
-  check_arg_page(page)
+  check_arg_single_integer(page, null = FALSE)
+  check_arg_char_opts(get_cols, c("limited", "all"), null = FALSE)
   check_arg_server(server)
   check_arg_token(token)
-  check_arg_get_cols(get_cols, c("limited", "all"))
   
   # URL
   url <- httr::modify_url(url   = server, 
@@ -148,7 +145,9 @@ labguru_get_project <- function(project_id,
                                 server = Sys.getenv("LABGURU_SERVER"), 
                                 token  = Sys.getenv("LABGURU_TOKEN")) {
   
-  # check arg project_id
+  check_arg_single_integer(project_id, null = FALSE)
+  check_arg_server(server)
+  check_arg_token(token)
   
   parsed <- labguru_get_by_id(type   = "projects",
                               id     = project_id,

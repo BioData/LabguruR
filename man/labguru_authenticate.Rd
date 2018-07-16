@@ -8,13 +8,13 @@ labguru_authenticate(email, password, server = "https://jonathan.labguru.com",
   set_sys = TRUE)
 }
 \arguments{
-\item{email}{Single character email address}
+\item{email}{character(1) email address}
 
-\item{password}{Single character password}
+\item{password}{character(1) password}
 
-\item{server}{Character - Server URL, "https://jonathan.labguru.com" by default}
+\item{server}{character(1) Server URL, "https://jonathan.labguru.com" by default}
 
-\item{set_sys}{Set server and token as system variables LABGURU_SERVER and LABGURU_TOKEN}
+\item{set_sys}{logical(1) Set server and token as system variables LABGURU_SERVER and LABGURU_TOKEN}
 }
 \value{
 acces token (string)

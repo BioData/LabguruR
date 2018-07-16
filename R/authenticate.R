@@ -5,10 +5,10 @@
 #' This function authenticates a user by email and password and returns a token and sets the system 
 #' variable LABGURU_TOKEN to that token by default.
 #'
-#' @param email Single character email address
-#' @param password Single character password
-#' @param server Character - Server URL, "https://jonathan.labguru.com" by default
-#' @param set_sys Set server and token as system variables LABGURU_SERVER and LABGURU_TOKEN 
+#' @param email character(1) email address
+#' @param password character(1) password
+#' @param server character(1) Server URL, "https://jonathan.labguru.com" by default
+#' @param set_sys logical(1) Set server and token as system variables LABGURU_SERVER and LABGURU_TOKEN 
 #' 
 #' @return acces token (string)
 #' @export
@@ -28,25 +28,11 @@ labguru_authenticate <- function(email, password, server = "https://jonathan.lab
   # EXTRAS:
   # Add user agent? ua <- httr::user_agent("http://github.com/BioData/LabguruR")
   
-  
   # Check arguments
   check_arg_email(email)
   check_arg_password(password)
   check_arg_server(server)
-  check_arg_set_sys(set_sys)
-  
-  # # Test arguments
-  # if (!is.character(email)) {
-  #   stop("Email has to be a character string")
-  # } else if (!is_valid_email(email)) {
-  #   stop("Invalid email address")
-  # }
-  # 
-  # if (!is.character(password)) stop("Password has to be a character string")
-  # 
-  # if (!is.character(server)) stop("Server has to be a character string")
-  # 
-  # if (!is.logical(set_sys)) stop("set_sys has to be a logical")
+  check_arg_single_logical(set_sys, null = FALSE)
   
   # Set server assystem variable
   if (set_sys) {
@@ -121,7 +107,9 @@ labguru_authenticate <- function(email, password, server = "https://jonathan.lab
 #' labguru_valid_token()
 #' }
 labguru_valid_token <- function(token = Sys.getenv("LABGURU_TOKEN")) {
+  check_arg_token(token)
   print("This function is not implemented yet")
+  NULL
 }
 
 

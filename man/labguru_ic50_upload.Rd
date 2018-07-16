@@ -2,25 +2,28 @@
 % Please edit documentation in R/ic50.R
 \name{labguru_ic50_upload}
 \alias{labguru_ic50_upload}
-\title{Title}
+\title{Labguru ic50 upload}
 \usage{
 labguru_ic50_upload(table, name, results_dir, img_pdf,
   server = Sys.getenv("LABGURU_SERVER"),
   token = Sys.getenv("LABGURU_TOKEN"))
 }
 \arguments{
-\item{table}{}
+\item{table}{data frame containing ic50 results}
 
-\item{name}{}
+\item{name}{character(1) name of the analysis}
 
-\item{results_dir}{}
+\item{results_dir}{character(1) directory where ic50 results are stored}
 
-\item{img_pdf}{}
+\item{img_pdf}{character(1) 'img' (default) or 'pdf' indicating whether result plots are uploaded as single images or pdf (as stored in results_dir)}
 
-\item{server}{}
+\item{server}{character(1) indicating the server URL}
 
-\item{token}{}
+\item{token}{character(1) access token for API authentication}
+}
+\value{
+list() with upload information
 }
 \description{
-Title
+Upload labguru ic50 analysis results to the server.
 }

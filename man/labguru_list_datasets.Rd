@@ -9,13 +9,13 @@ labguru_list_datasets(page = 1, get_cols = "limited",
   token = Sys.getenv("LABGURU_TOKEN"))
 }
 \arguments{
-\item{page}{Single numeric representing the page number of data to request. Limited data can be return in 1 request, incrementally try higher page numbers for more datasets}
+\item{page}{numeric(1) representing the page number of data to request. Limited data can be return in 1 request, incrementally try higher page numbers for more datasets}
 
-\item{get_cols}{Single character either 'limited' or 'all' to return a subset or all of the information regarding the datasets}
+\item{get_cols}{character(1) either 'limited' or 'all' to return a subset or all of the information regarding the datasets}
 
-\item{server}{Single character indicating the server URL}
+\item{server}{character(1) indicating the server URL}
 
-\item{token}{Single character access token for API authentication}
+\item{token}{character(1) access token for API authentication}
 }
 \value{
 dataframe with information of datasets, NULL if no datasets were available for the request

@@ -2,26 +2,28 @@
 % Please edit documentation in R/upload_file.R
 \name{labguru_link_visualization}
 \alias{labguru_link_visualization}
-\title{Title}
+\title{Labguru link visualization}
 \usage{
 labguru_link_visualization(dataset_id, attachment_id, name,
   description = NULL, server = Sys.getenv("LABGURU_SERVER"),
   token = Sys.getenv("LABGURU_TOKEN"))
 }
 \arguments{
-\item{dataset_id}{}
+\item{dataset_id}{numeric(1) The dataset id for which to link visualization}
 
-\item{attachment_id}{}
+\item{attachment_id}{numeric(1) The attachment id for which to link visualization}
 
-\item{description}{}
+\item{name}{character(1) the name}
 
-\item{server}{}
+\item{description}{character(1) The description of the folder}
 
-\item{token}{}
+\item{server}{character(1) indicating the server URL}
+
+\item{token}{character(1) access token for API authentication}
 }
 \value{
 
 }
 \description{
-Title
+Labguru link visualization
 }

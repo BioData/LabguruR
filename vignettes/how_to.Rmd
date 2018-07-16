@@ -17,6 +17,12 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+```{r}
+library(LabguruR)
+```
+
+
 # Authenticate
 
 First get an authentication token using labguru_authenticate.

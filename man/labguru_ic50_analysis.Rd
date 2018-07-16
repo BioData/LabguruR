@@ -2,7 +2,7 @@
 % Please edit documentation in R/ic50.R
 \name{labguru_ic50_analysis}
 \alias{labguru_ic50_analysis}
-\title{ic50 Analysis}
+\title{Labguru ic50 Analysis}
 \usage{
 labguru_ic50_analysis(plate_id, indir = ".", outdir_plate = "./plate",
   outdir_results = "./results", plates = 2, inhib = NULL,
@@ -11,27 +11,27 @@ labguru_ic50_analysis(plate_id, indir = ".", outdir_plate = "./plate",
   token = Sys.getenv("LABGURU_TOKEN"))
 }
 \arguments{
-\item{plate_id}{}
+\item{plate_id}{numeric(1) plate id of the plate from labguru server}
 
-\item{indir}{}
+\item{indir}{character(1) argument of ic50::ic50() function with same the name}
 
-\item{outdir_plate}{}
+\item{outdir_plate}{character(1) directory name where to store plate data}
 
-\item{outdir_results}{}
+\item{outdir_results}{character(1) argument of ic50::ic50() function with the name outdir}
 
-\item{plates}{}
+\item{plates}{numeric(1) argument of ic50::ic50() function with same the name}
 
-\item{inhib}{}
+\item{inhib}{numeric(1) argument of ic50::ic50() function with same the name}
 
-\item{normalize}{}
+\item{normalize}{character(1) argument of ic50::ic50() function with same the name}
 
-\item{graphics}{}
+\item{graphics}{character(1) argument of ic50::ic50() function with same the name}
 
-\item{img_png}{}
+\item{img_png}{logical(1) TRUE (default) to create single images from the pdf result, magick package is required for TRUE.}
 
-\item{server}{}
+\item{server}{character(1) indicating the server URL}
 
-\item{token}{}
+\item{token}{character(1) access token for API authentication}
 }
 \description{
 Download plate from labguru server and run ic50 analysis.

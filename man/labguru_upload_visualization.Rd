@@ -5,24 +5,23 @@
 \title{Labguru upload visualization}
 \usage{
 labguru_upload_visualization(file, title, dataset_id = NULL, name = NULL,
-  description = NULL, attach_to_uuid = NULL,
-  server = Sys.getenv("LABGURU_SERVER"),
+  description = NULL, server = Sys.getenv("LABGURU_SERVER"),
   token = Sys.getenv("LABGURU_TOKEN"))
 }
 \arguments{
-\item{file}{Single character that is a path to a file}
+\item{file}{character(1) that is a path to a file}
 
-\item{title}{Single character that is the title for the uploaded file on Labguru}
+\item{title}{character(1) that is the title for the uploaded file on Labguru}
 
-\item{dataset_id}{Numeric to link the visualization to dataset(s) on Labguru}
+\item{dataset_id}{Numeric(1) to link the visualization to dataset(s) on Labguru}
 
-\item{name}{Single character that is the name for visualisation link with database}
+\item{name}{character(1) that is the name for visualisation link with database}
 
-\item{description}{Single character to describe visualization on Labguru}
+\item{description}{character(1) to describe visualization on Labguru}
 
-\item{server}{}
+\item{server}{character(1) indicating the server URL}
 
-\item{token}{}
+\item{token}{character(1) access token for API authentication}
 }
 \description{
 Labguru upload visualization

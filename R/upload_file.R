@@ -3,12 +3,12 @@
 #' 
 #' Upload a file to Labguru
 #'
-#' @param file Single character that is the path to a file
-#' @param title Single character as visualization title on Labguru
-#' @param description Single character to describe visualization on Labguru
-#' @param attach_to_uuid (optional) single character that is the LG_UUID of the object to which this file should be attached
-#' @param server Single character indicating the server URL
-#' @param token Single character access token for API authentication
+#' @param file character(1) that is the path to a file
+#' @param title character(1) as visualization title on Labguru
+#' @param description character(1) to describe visualization on Labguru
+#' @param attach_to_uuid (optional) character(1) that is the LG_UUID of the object to which this file should be attached
+#' @param server character(1) indicating the server URL
+#' @param token character(1) access token for API authentication
 #'
 #' @return list containing uploaded id and url
 #' @export
@@ -36,15 +36,14 @@
 labguru_upload_file <- function(file, 
                                 title,
                                 description    = NULL,
-                                attach_to_uuid = NULL,
+                                # attach_to_uuid = NULL,
                                 server         = Sys.getenv("LABGURU_SERVER"), 
                                 token          = Sys.getenv("LABGURU_TOKEN")) {
   
   # Test arguments
-  check_arg_file(file)
-  check_arg_title(title)
-  check_arg_description(description)
-  check_arg_attach_to_uuid(attach_to_uuid)
+  check_arg_file(file)  
+  check_arg_single_character(title, null = FALSE)
+  check_arg_single_character(description, null = TRUE)
   check_arg_server(server)
   check_arg_token(token)
   
@@ -59,8 +58,8 @@ labguru_upload_file <- function(file,
   body <- list("token"                = token,
                "item[title]"          = title, 
                "item[description]"    = description,
-               "item[attachment]"     = httr::upload_file(file),
-               "item[attach_to_uuid]" = attach_to_uuid) 
+               "item[attachment]"     = httr::upload_file(file))#,
+               # "item[attach_to_uuid]" = attach_to_uuid) 
   
   # Post
   resp <- httr::POST(url    = url, 
@@ -93,13 +92,13 @@ labguru_upload_file <- function(file,
 #' 
 #' 
 #' 
-#' @param file Single character that is a path to a file
-#' @param title Single character that is the title for the uploaded file on Labguru
-#' @param dataset_id Numeric to link the visualization to dataset(s) on Labguru
-#' @param name Single character that is the name for visualisation link with database 
-#' @param description Single character to describe visualization on Labguru
-#' @param server 
-#' @param token 
+#' @param file character(1) that is a path to a file
+#' @param title character(1) that is the title for the uploaded file on Labguru
+#' @param dataset_id Numeric(1) to link the visualization to dataset(s) on Labguru
+#' @param name character(1) that is the name for visualisation link with database 
+#' @param description character(1) to describe visualization on Labguru
+#' @param server character(1) indicating the server URL
+#' @param token character(1) access token for API authentication
 #'
 #' @return
 #' @export
@@ -110,15 +109,16 @@ labguru_upload_visualization <- function(file,
                                          dataset_id     = NULL,
                                          name           = NULL,
                                          description    = NULL,
-                                         attach_to_uuid = NULL,
+                                         # attach_to_uuid = NULL,
                                          server         = Sys.getenv("LABGURU_SERVER"), 
                                          token          = Sys.getenv("LABGURU_TOKEN")) {
   
   # Check arguments
-  check_arg_file(file)
-  check_arg_title(title)
-  check_arg_description(description)
-  check_arg_attach_to_uuid(attach_to_uuid)
+  check_arg_file(file)  
+  check_arg_single_character(title, null = FALSE)
+  check_arg_single_integer(dataset_id, null = FALSE)
+  check_arg_single_character(name, null = TRUE)
+  check_arg_single_character(description, null = TRUE)
   check_arg_server(server)
   check_arg_token(token)
   
@@ -126,7 +126,7 @@ labguru_upload_visualization <- function(file,
   uploaded_file <- labguru_upload_file(file           = file,
                                        title          = title,
                                        description    = description,
-                                       attach_to_uuid = attach_to_uuid,
+                                       # attach_to_uuid = attach_to_uuid,
                                        server         = server,
                                        token          = token)
   
@@ -151,21 +151,14 @@ labguru_upload_visualization <- function(file,
 
 
 
-# url <- paste(base_url, "/api/v1/visualizations","?token=",token,sep="")
-# dataset_id <- 1 
-# attachment_id <- dat$id
-# data <- list( "dataset_id" = dataset_id, "attachment_id" = attachment_id, "name" = "Root VS BioMass", description = "")
-# item_to_post <- list("item" = data)
-# element <- httr::POST(url, body = item_to_post,encode = "json")
-
-#' Title
+#' Labguru link visualization
 #'
-#' @param dataset_id 
-#' @param attachment_id 
-#' @param name
-#' @param description 
-#' @param server 
-#' @param token 
+#' @param dataset_id numeric(1) The dataset id for which to link visualization
+#' @param attachment_id numeric(1) The attachment id for which to link visualization
+#' @param name character(1) the name
+#' @param description character(1) The description of the folder
+#' @param server character(1) indicating the server URL
+#' @param token character(1) access token for API authentication
 #'
 #' @return
 #' 
@@ -181,13 +174,12 @@ labguru_link_visualization <- function(dataset_id,
                                        token          = Sys.getenv("LABGURU_TOKEN")) {
   
   # Test arguments
-  # check_arg_dataset_id(dataset_id)
-  # check_arg_attachment_id(attachment_id)
-  check_arg_name(name)
-  check_arg_description(description)
+  check_arg_single_integer(dataset_id, null = FALSE)
+  check_arg_single_integer(attachment_id, null = FALSE)
+  check_arg_single_character(name, null = FALSE)
+  check_arg_single_character(description, null = TRUE)
   check_arg_server(server)
   check_arg_token(token)
-  
 
   # URL
   base_url <- server

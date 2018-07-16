@@ -8,15 +8,16 @@ labguru_upload_dataset(dataset, name, server = Sys.getenv("LABGURU_SERVER"),
   token = Sys.getenv("LABGURU_TOKEN"))
 }
 \arguments{
-\item{dataset}{An R data frame}
+\item{dataset}{data frame you wish to upload to Labguru}
 
-\item{name}{A character string}
+\item{name}{character(1)}
 
-\item{server}{A character string indicating the server URL}
+\item{server}{character(1) indicating the server URL}
 
-\item{token}{An access token for API authentication}
-
-\item{description}{A character string or NULL (default) to ignore}
+\item{token}{character(1) access token for API authentication}
+}
+\value{
+dataset_id
 }
 \description{
 Upload a dataset to labguru
@@ -24,7 +25,6 @@ Upload a dataset to labguru
 \examples{
 \dontrun{
 labguru_upload_dataset(dataset    = mtcars,
-                       name       = "mtcars",
-                       desription = "Motor Trend Car Road Tests data")
+                       name       = "mtcars")
 }
 }

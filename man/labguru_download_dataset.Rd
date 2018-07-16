@@ -8,11 +8,11 @@ labguru_download_dataset(dataset_id, server = Sys.getenv("LABGURU_SERVER"),
   token = Sys.getenv("LABGURU_TOKEN"))
 }
 \arguments{
-\item{dataset_id}{Single numeric id indicating a dataset on labguru server}
+\item{dataset_id}{numeric(1) id indicating a dataset on labguru server}
 
-\item{server}{Single character indicating the server URL}
+\item{server}{character(1) indicating the server URL}
 
-\item{token}{Single character access token for API authentication}
+\item{token}{character(1) access token for API authentication}
 }
 \value{
 data frame of labguru dataset

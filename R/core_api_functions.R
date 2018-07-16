@@ -23,8 +23,6 @@ labguru_get_by_id <- function(type,
                               server = Sys.getenv("LABGURU_SERVER"), 
                               token  = Sys.getenv("LABGURU_TOKEN")) {
   
-  # check arg type, id, server, token
-  
   # URL
   base_url <- server
   path     <- paste0("/api/v1/", type, "/", id)

@@ -28,9 +28,6 @@
 #'                                 token       = Sys.getenv("LABGURU_TOKEN")) {
 #'   
 #'   # Test arguments
-#'   check_arg_name(name)
-#'   check_arg_server(server)
-#'   check_arg_token(token)
 #'   
 #'   # CHECK ARG experiment ID
 #'   
@@ -89,10 +86,11 @@ labguru_list_elements <- function(experiment_id = NULL,
                                   server        = Sys.getenv("LABGURU_SERVER"), 
                                   token         = Sys.getenv("LABGURU_TOKEN")) {
   
-  check_arg_page(page)
+  check_arg_single_integer(experiment_id, null = TRUE)
+  check_arg_single_integer(page, null = FALSE)
+  check_arg_char_opts(get_cols, c("limited", "all"), null = FALSE)
   check_arg_server(server)
   check_arg_token(token)
-  check_arg_get_cols(get_cols, c("limited", "all"))
   
   # CHECK ARG experiment_ID (can be null)
   

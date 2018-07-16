@@ -3,11 +3,10 @@
 #'
 #' Upload a dataset to labguru
 #'
-#' @param dataset An R data frame
-#' @param name A character string
-#' @param description A character string or NULL (default) to ignore
-#' @param server A character string indicating the server URL
-#' @param token An access token for API authentication
+#' @param dataset data frame you wish to upload to Labguru
+#' @param name character(1)
+#' @param server character(1) indicating the server URL
+#' @param token character(1) access token for API authentication
 #'
 #' @return dataset_id
 #' @export
@@ -18,8 +17,7 @@
 #' @examples
 #' \dontrun{
 #' labguru_upload_dataset(dataset    = mtcars,
-#'                        name       = "mtcars",
-#'                        desription = "Motor Trend Car Road Tests data")
+#'                        name       = "mtcars")
 #' }
 labguru_upload_dataset <- function(dataset, 
                                    name, 
@@ -29,50 +27,38 @@ labguru_upload_dataset <- function(dataset,
   
   # Test arguments
   check_arg_dataset(dataset)
-  check_arg_name(name)
-  # check_arg_description(description)
+  check_arg_single_character(name, null = FALSE)
+  # check_arg_single_character(description, null = TRUE)
   check_arg_server(server)
   check_arg_token(token)
 
   # URL
-  base_url <- server
-  path     <- "/api/v1/datasets"
-  query    <- paste0("token=", token, 
-                     "&name=", name)#, 
-                     # if (!is.null(description)) {paste0("&description=", description)})
+  url <- httr::modify_url(url   = server, 
+                          path  = "/api/v1/datasets", 
+                          query = paste0("token=", token, 
+                                         "&name=", name))#, 
+                          # if (!is.null(description)) {paste0("&description=", description)}))
   
-  url <- httr::modify_url(url   = base_url, 
-                          path  = path, 
-                          query = query)
-
-  # Post
-  resp <- httr::POST(url    = url, 
-                     body   = as.data.frame(dataset), 
-                     encode = "json")
-  
-  # # Preferred way
-  # # BODY
-  # body <- list("data"  = dataset,
-  #              "item"  = list(name = name),
-  #              "token" = token)
-  # 
-  # # POST
-  # resp <- httr::POST(url    = url,
-  #                    body   = body,
+  parsed <- labguru_post_item(url    = url,
+                              body   = body,
+                              encode = "json")
+  # # Post
+  # resp <- httr::POST(url    = url, 
+  #                    body   = as.data.frame(dataset), 
   #                    encode = "json")
-  
-  # Expect resp to be JSON 
-  if (httr::http_type(resp) != "application/json") {
-    stop("API did not return JSON", call. = FALSE)
-  }
-  
-  # Parse without simplifaction for consistency
-  parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), simplifyVector = FALSE)
-
-  # check for request error
-  if (httr::http_error(resp)) {
-    stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
-  }
+  # 
+  # # Expect resp to be JSON 
+  # if (httr::http_type(resp) != "application/json") {
+  #   stop("API did not return JSON", call. = FALSE)
+  # }
+  # 
+  # # Parse without simplifaction for consistency
+  # parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), simplifyVector = FALSE)
+  # 
+  # # check for request error
+  # if (httr::http_error(resp)) {
+  #   stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
+  # }
   
   # invisible(TRUE)
   # Return ID
@@ -86,10 +72,10 @@ labguru_upload_dataset <- function(dataset,
 #' 
 #' This function returns information of the available datasets in a data frame.
 #'
-#' @param page Single numeric representing the page number of data to request. Limited data can be return in 1 request, incrementally try higher page numbers for more datasets
-#' @param get_cols Single character either 'limited' or 'all' to return a subset or all of the information regarding the datasets
-#' @param server Single character indicating the server URL
-#' @param token Single character access token for API authentication
+#' @param page numeric(1) representing the page number of data to request. Limited data can be return in 1 request, incrementally try higher page numbers for more datasets
+#' @param get_cols character(1) either 'limited' or 'all' to return a subset or all of the information regarding the datasets
+#' @param server character(1) indicating the server URL
+#' @param token character(1) access token for API authentication
 #'
 #' @return dataframe with information of datasets, NULL if no datasets were available for the request
 #' @export
@@ -106,20 +92,16 @@ labguru_list_datasets <- function(page     = 1,
                                   server   = Sys.getenv("LABGURU_SERVER"), 
                                   token    = Sys.getenv("LABGURU_TOKEN")) {
   
-  check_arg_page(page)
+  check_arg_single_integer(page, null = FALSE)
   check_arg_server(server)
   check_arg_token(token)
-  check_arg_get_cols(get_cols, c("limited", "all"))
+  check_arg_char_opts(get_cols, c("limited", "all"), null = FALSE)
   
   # URL
-  base_url <- server
-  path     <- "/api/v1/datasets"
-  query    <- paste0("token=", token, 
-                     "&page=", page)
-  
-  url <- httr::modify_url(url   = base_url, 
-                          path  = path,
-                          query = query)
+  url <- httr::modify_url(url   = server, 
+                          path  = "/api/v1/datasets",
+                          query = paste0("token=", token, 
+                                         "&page=", page))
   
   resp <- httr::GET(url)
   
@@ -161,9 +143,9 @@ labguru_list_datasets <- function(page     = 1,
 #' 
 #' Takes a dataset id and donwloads the dataset.
 #'
-#' @param dataset_id Single numeric id indicating a dataset on labguru server
-#' @param server Single character indicating the server URL
-#' @param token Single character access token for API authentication
+#' @param dataset_id numeric(1) id indicating a dataset on labguru server
+#' @param server character(1) indicating the server URL
+#' @param token character(1) access token for API authentication
 #'
 #' @return data frame of labguru dataset
 #' @export
@@ -179,6 +161,10 @@ labguru_download_dataset <- function(dataset_id,
                                      server = Sys.getenv("LABGURU_SERVER"), 
                                      token  = Sys.getenv("LABGURU_TOKEN")) {
 
+  check_arg_single_integer(dataset_id, null = FALSE)
+  check_arg_server(server)
+  check_arg_token(token)
+  
   parsed <- labguru_get_by_id(type   = "datasets",
                               id     = dataset_id,
                               server = server,

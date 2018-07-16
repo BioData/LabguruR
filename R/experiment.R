@@ -32,17 +32,13 @@ labguru_add_experiment <- function(title,
                                    token       = Sys.getenv("LABGURU_TOKEN")) {
   
   # Test arguments
-  check_arg_title(title)
-  check_arg_description(description)
+  check_arg_single_character(title, null = FALSE)
+  check_arg_single_integer(project_id, null = FALSE)
+  check_arg_single_integer(folder_id, null = FALSE)
+  check_arg_single_character(description, null = TRUE)
+  check_arg_char_opts(return, opts = c("id", "all"), null = FALSE)
   check_arg_server(server)
   check_arg_token(token)
-  
-  # CHECK ARG PROJECT ID
-  # CHECK ARG FOLDER ID
-  
-  stopifnot(is.character(return))
-  stopifnot(length(return) == 1)
-  stopifnot(return %in% c('id', 'all'))
   
   # URL
   url <- httr::modify_url(url   = server, 
@@ -113,10 +109,11 @@ labguru_list_experiments <- function(folder_id = NULL,
                                      server    = Sys.getenv("LABGURU_SERVER"), 
                                      token     = Sys.getenv("LABGURU_TOKEN")) {
   
-  check_arg_page(page)
+  check_arg_single_integer(folder_id, null = TRUE)
+  check_arg_single_integer(page, null = FALSE)
+  check_arg_char_opts(get_cols, c("limited", "all"), null = FALSE)
   check_arg_server(server)
   check_arg_token(token)
-  check_arg_get_cols(get_cols, c("limited", "all"))
   
   # CHECK ARG FOLDER_ID (can be null)
   
@@ -178,7 +175,9 @@ labguru_get_experiment <- function(experiment_id,
                                    server = Sys.getenv("LABGURU_SERVER"), 
                                    token  = Sys.getenv("LABGURU_TOKEN")) {
   
-  # check arg experiment_id
+  check_arg_single_integer(experiment_id, null = FALSE)
+  check_arg_server(server)
+  check_arg_token(token)
   
   parsed <- labguru_get_by_id(type   = "experiments",
                               id     = experiment_id,

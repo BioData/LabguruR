@@ -4,22 +4,22 @@
 \alias{labguru_upload_file}
 \title{Labguru upload file}
 \usage{
-labguru_upload_file(file, title, description = NULL, attach_to_uuid = NULL,
+labguru_upload_file(file, title, description = NULL,
   server = Sys.getenv("LABGURU_SERVER"),
   token = Sys.getenv("LABGURU_TOKEN"))
 }
 \arguments{
-\item{file}{Single character that is the path to a file}
+\item{file}{character(1) that is the path to a file}
 
-\item{title}{Single character as visualization title on Labguru}
+\item{title}{character(1) as visualization title on Labguru}
 
-\item{description}{Single character to describe visualization on Labguru}
+\item{description}{character(1) to describe visualization on Labguru}
 
-\item{attach_to_uuid}{(optional) single character that is the LG_UUID of the object to which this file should be attached}
+\item{server}{character(1) indicating the server URL}
 
-\item{server}{Single character indicating the server URL}
+\item{token}{character(1) access token for API authentication}
 
-\item{token}{Single character access token for API authentication}
+\item{attach_to_uuid}{(optional) character(1) that is the LG_UUID of the object to which this file should be attached}
 }
 \value{
 list containing uploaded id and url

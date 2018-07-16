@@ -1,14 +1,16 @@
 
-#' Title
+#' Labguru ic50 upload
+#' 
+#' Upload labguru ic50 analysis results to the server.
 #'
-#' @param table 
-#' @param name 
-#' @param results_dir 
-#' @param img_pdf 
-#' @param server 
-#' @param token 
+#' @param table data frame containing ic50 results
+#' @param name character(1) name of the analysis
+#' @param results_dir character(1) directory where ic50 results are stored
+#' @param img_pdf character(1) 'img' (default) or 'pdf' indicating whether result plots are uploaded as single images or pdf (as stored in results_dir)
+#' @param server character(1) indicating the server URL
+#' @param token character(1) access token for API authentication
 #'
-#' @return
+#' @return list() with upload information
 #' @export
 #'
 #' @examples
@@ -19,16 +21,18 @@ labguru_ic50_upload <- function(table,
                                 server = Sys.getenv("LABGURU_SERVER"), 
                                 token  = Sys.getenv("LABGURU_TOKEN")) {
   
-  # check_arg_table(table)
-  # check_arg_name(name)
-  # check_arg_results_dir(results_dir)
-  # check_arg_img_pdf(img_pdf)
+  check_arg_dataframe(table)
+  check_arg_single_character(name, null = FALSE)
+  check_arg_single_character(results_dir, null = FALSE)
+  check_arg_char_opts(img_pdf, opts = c("img", "pdf"), null = FALSE)
+  check_arg_server(server)
+  check_arg_token(token)
   
   fls <- list.files(results_dir)
   
   if (img_pdf == "img") {
     fls <- fls[grepl(pattern = '.png$', x = fls)]
-  } else if (img_pdf == "img") {
+  } else if (img_pdf == "pdf") {
     fls <- fls[grepl(pattern = '.pdf$', x = fls)]
   } else { stop("Results files must be pdf or images.") }
   
@@ -51,21 +55,21 @@ labguru_ic50_upload <- function(table,
   rtn
 }
 
-#' ic50 Analysis
+#' Labguru ic50 Analysis
 #' 
 #' Download plate from labguru server and run ic50 analysis. 
 #'
-#' @param plate_id 
-#' @param indir 
-#' @param outdir_plate 
-#' @param outdir_results 
-#' @param plates 
-#' @param inhib 
-#' @param normalize 
-#' @param graphics 
-#' @param img_png 
-#' @param server 
-#' @param token 
+#' @param plate_id numeric(1) plate id of the plate from labguru server
+#' @param indir character(1) argument of ic50::ic50() function with same the name
+#' @param outdir_plate character(1) directory name where to store plate data
+#' @param outdir_results character(1) argument of ic50::ic50() function with the name outdir
+#' @param plates numeric(1) argument of ic50::ic50() function with same the name 
+#' @param inhib numeric(1) argument of ic50::ic50() function with same the name
+#' @param normalize character(1) argument of ic50::ic50() function with same the name
+#' @param graphics character(1) argument of ic50::ic50() function with same the name
+#' @param img_png logical(1) TRUE (default) to create single images from the pdf result, magick package is required for TRUE. 
+#' @param server character(1) indicating the server URL
+#' @param token character(1) access token for API authentication
 #'
 #' @return
 #' @export
@@ -87,6 +91,18 @@ labguru_ic50_analysis <- function(plate_id,
                                   img_png        = TRUE, # for img the magick package is required
                                   server         = Sys.getenv("LABGURU_SERVER"), 
                                   token          = Sys.getenv("LABGURU_TOKEN")) {
+  
+  check_arg_single_integer(plate_id, null = FALSE)
+  check_arg_single_character(indir, null = FALSE)
+  check_arg_single_character(outdir_plate, null = FALSE)
+  check_arg_single_character(outdir_results, null = FALSE)
+  check_arg_single_integer(plates, null = FALSE)
+  check_arg_numeric(inhib, null = TRUE)
+  check_arg_single_character(normalize, null = FALSE)
+  check_arg_single_character(graphics, null = FALSE)
+  check_arg_single_logical(img_png, null = FALSE)
+  check_arg_server(server)
+  check_arg_token(token)
   
   plate <- labguru_download_plate(plate  = plate_id, 
                                   dir    = outdir_plate,
@@ -146,10 +162,10 @@ labguru_ic50_analysis <- function(plate_id,
 #'
 #' Download a plate's data and stores dilution, measure and control files in a folder or returns data frames.
 #'
-#' @param plate Single numeric indicating the plate id
-#' @param dir Single character indicating the directory to store the created files
-#' @param server A character string indicating the server URL
-#' @param token An access token for API authentication
+#' @param plate numeric(1) indicating the plate id
+#' @param dir character(1) indicating the directory to store the created files
+#' @param server character(1) string indicating the server URL
+#' @param token character(1) access token for API authentication
 #'
 #' @return invisible, list() with dir name, and dilution, measure nd control data frames
 #' @export
@@ -167,8 +183,8 @@ labguru_download_plate <- function(plate,
                                    token  = Sys.getenv("LABGURU_TOKEN")) {
   
   # Test arguments
-  # check_arg_plate(plate)
-  # check_arg_dir(dir)
+  check_arg_single_integer(plate, null = FALSE)
+  check_arg_single_character(dir, null = FALSE)
   check_arg_server(server)
   check_arg_token(token)
 
@@ -312,6 +328,13 @@ ic50_extract_data_from_json <- function(prs_data) {
 
 
 
+#' Labguru create measure data for ic50
+#'
+#' @param df extracted plate data
+#'
+#' @return data frame of measure data
+#'
+#' @examples
 ic50_create_measure_data <- function(df) {
   # ASSUMPTION: 1 compound per row
   # CHECK: does it require equal columns per row
@@ -328,6 +351,14 @@ ic50_create_measure_data <- function(df) {
   measure
 }
 
+
+#' Labguru create dilution data for ic50
+#'
+#' @param df extracted plate data
+#'
+#' @return data frame of dilution data
+#'
+#' @examples
 ic50_create_dilution_data <- function(df) {
   # ASSUMPTION: 1 compound per row
   # CHECK: does it require equal columns per row
@@ -344,6 +375,15 @@ ic50_create_dilution_data <- function(df) {
   dilution
 }
 
+
+#' Labguru create control data for ic50
+#'
+#' @param df extracted plate data
+#' @param wells extracted wells data
+#'
+#' @return data frame of control data
+#'
+#' @examples
 ic50_create_control_data <- function(df, wells) {
   cntrl <- wells[c("control", "coordinates")]
   cntrl <- cntrl[cntrl$control, ]
