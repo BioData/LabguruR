@@ -336,31 +336,6 @@ check_arg_dataframe <- function(dataframe) {
 
 
 
-
-
-
-# -----------------------------
-
-
-
-#' Check argument attach_to_uuid
-#' 
-#' Attach to uuid has not been implemented yet and hence if not null is now considered FALSE 
-#'
-#' @param attach_to_uuid argument to check
-#'
-#' @return TRUE or error
-check_arg_attach_to_uuid <- function(attach_to_uuid) {
-  if (!is.null(attach_to_uuid)) stop("Sorry, attach_to_uuid can't be used yet")
-  
-  return(TRUE)
-}
-
-
-# -----------------------------
-
-
-
 #' Check argument server
 #' 
 #' Server is the base URL for the API connection and has to be a character string of length 1.

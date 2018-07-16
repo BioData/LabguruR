@@ -25,5 +25,5 @@ labguru_link_visualization(dataset_id, attachment_id, name,
 
 }
 \description{
-Labguru link visualization
+Link a visualization to a dataset on the Labguru server.
 }

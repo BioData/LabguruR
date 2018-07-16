@@ -29,8 +29,4 @@ library(LabguruR)
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-## basic example code
-```
+For examples see the vignettes. Start with the how_to vignette (LabguruR/inst/doc/how_to.html).

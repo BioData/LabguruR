@@ -24,5 +24,5 @@ labguru_upload_visualization(file, title, dataset_id = NULL, name = NULL,
 \item{token}{character(1) access token for API authentication}
 }
 \description{
-Labguru upload visualization
+Upload a visualization to the Labguru server.
 }

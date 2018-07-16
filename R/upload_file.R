@@ -90,7 +90,7 @@ labguru_upload_file <- function(file,
 
 #' Labguru upload visualization
 #' 
-#' 
+#' Upload a visualization to the Labguru server.
 #' 
 #' @param file character(1) that is a path to a file
 #' @param title character(1) that is the title for the uploaded file on Labguru
@@ -152,6 +152,8 @@ labguru_upload_visualization <- function(file,
 
 
 #' Labguru link visualization
+#' 
+#' Link a visualization to a dataset on the Labguru server.
 #'
 #' @param dataset_id numeric(1) The dataset id for which to link visualization
 #' @param attachment_id numeric(1) The attachment id for which to link visualization
