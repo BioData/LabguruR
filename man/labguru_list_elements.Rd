@@ -2,64 +2,7 @@
 % Please edit documentation in R/elements.R
 \name{labguru_list_elements}
 \alias{labguru_list_elements}
-\title{#' Labguru add element
-#'
-#' Add a new element to labguru
-#'
-#' @param name character(1) The name of the element
-#' @param experiment_id numeric(1) The experiment id for which to add a new procedure
-#' @param return character(1) whether the function returns either 'id' (default) or 'all' element information
-#' @param server character(1) indicating the server URL
-#' @param token character(1) access token for API authentication
-#'
-#' @return list with either element id only or all element information
-#' @export
-#'
-#' @import httr
-#' @importFrom jsonlite fromJSON
-#'
-#' @examples
-#' \dontrun{
-#' labguru_add_element(project_id  = 1,
-#'                     name        = "My new element",
-#'                     description = "This element contains ...")
-#' }
-labguru_add_element <- function(name,
-                                experiment_id,
-                                return      = "id",
-                                server      = Sys.getenv("LABGURU_SERVER"),
-                                token       = Sys.getenv("LABGURU_TOKEN")) {
-  
-  # Test arguments
-  
-  # CHECK ARG experiment ID
-  
-  stopifnot(is.character(return))
-  stopifnot(length(return) == 1)
-  stopifnot(return %in% c('id', 'all'))
-  
-  # URL
-  url <- httr::modify_url(url   = server,
-                          path  = "/api/v1/element_containers")
-  
-  # Body
-  body <- list("token"                = token,
-               "item[name]"           = name,
-               "item[container_id]"   = experiment_id,
-               "item[container_type]" = "Projects::Experiment")
-  
-  # POST
-  parsed <- labguru_post_item(url  = url,
-                              body = body)
-  
-  # return information
-  if (return == "id") {
-    list(id = parsed$id)
-  } else {
-    parsed
-  }
-}
-Labguru list elements}
+\title{Labguru list elements}
 \usage{
 labguru_list_elements(experiment_id = NULL, page = 1,
   get_cols = "limited", server = Sys.getenv("LABGURU_SERVER"),
