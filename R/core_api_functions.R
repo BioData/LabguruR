@@ -76,13 +76,15 @@ labguru_post_item <- function(url,
                               config = NULL,
                               handle = NULL) {
   
-  # Post
-  resp <- httr::POST(url    = url, 
-                     body   = body,
-                     if (!is.null(encode)) encode = encode,
-                     if (!is.null(config)) config = config,
-                     if (!is.null(handle)) handle = handle
-  )
+  # Build the list such that NULLS are completely left out.
+  args <- list()
+  args$url    <- url
+  args$body   <- body
+  args$encode <- encode
+  args$config <- config
+  args$handle <- handle
+  
+  resp <- do.call(httr::POST, args)
   
   # Expect resp to be JSON 
   if (httr::http_type(resp) != "application/json") {
@@ -94,7 +96,8 @@ labguru_post_item <- function(url,
   
   # check for request error
   if (httr::http_error(resp)) {
-    stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
+    message(parsed$errors)
+    stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$errors), call. = FALSE)
   }
   
   parsed

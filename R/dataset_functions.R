@@ -26,12 +26,27 @@ labguru_upload_dataset <- function(dataset,
                                    token  = Sys.getenv("LABGURU_TOKEN")) {
   
   # Test arguments
-  check_arg_dataset(dataset)
+  check_arg_dataframe(dataset)
   check_arg_single_character(name, null = FALSE)
   # check_arg_single_character(description, null = TRUE)
   check_arg_server(server)
   check_arg_token(token)
 
+  # base_url <- server
+  # path     <- "/api/v1/datasets"
+  # query    <- paste0("token=", token, 
+  #                    "&name=", name)#, 
+  #                    # if (!is.null(description)) {paste0("&description=", description)})
+  # 
+  # url <- httr::modify_url(url   = base_url, 
+  #                         path  = path, 
+  #                         query = query)
+  # # Post
+  # resp <- httr::POST(url    = url, 
+  #                    body   = as.data.frame(dataset), 
+  #                    encode = "json")
+  # 
+  
   # URL
   url <- httr::modify_url(url   = server, 
                           path  = "/api/v1/datasets", 
@@ -40,7 +55,7 @@ labguru_upload_dataset <- function(dataset,
                           # if (!is.null(description)) {paste0("&description=", description)}))
   
   parsed <- labguru_post_item(url    = url,
-                              body   = body,
+                              body   = as.data.frame(dataset),
                               encode = "json")
   # # Post
   # resp <- httr::POST(url    = url, 
