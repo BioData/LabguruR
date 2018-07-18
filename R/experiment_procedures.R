@@ -17,9 +17,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' labguru_add_experiment_procedure(project_id  = 1,
-#'                                  name        = "My new experiment procedure",
-#'                                  description = "This experiment procedure contains ...")
+#' labguru_add_experiment_procedure(name          = "My new experiment procedure",
+#'                                  experiment_id = 1,
+#'                                  return        = "id")
 #' }
 labguru_add_experiment_procedure <- function(name,
                                              experiment_id,
@@ -109,7 +109,7 @@ labguru_list_experiment_procedures <- function(experiment_id = NULL,
   
   # experiment_id not available in parsed result so find experiment_procedure_ids from a get_experiment request
   if (!is.null(experiment_id)) {
-    ex_pr_id <- labguru_get_experiment(experiment_id = 1)
+    ex_pr_id <- labguru_get_experiment(experiment_id = experiment_id)
     ex_pr_id <- ex_pr_id$experiment_procedures$experiment_procedure.id
       
     parsed <- parsed[parsed$id %in% ex_pr_id, ]

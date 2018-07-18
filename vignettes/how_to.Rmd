@@ -52,15 +52,15 @@ compensation
 ```{r}
 # HAS THE API FOR DATASET CHANGED ALREADY? BECAUSE IT SEEMS THIS FUNCTION BROKE.
 up_0 <- labguru_upload_dataset(dataset = compensation,
-                               name    = paste0("compensation", date()))
+                               name    = paste0("compensation_", gsub("[^[:alnum:]]","", date())))
 up_0
 ```
 
 # List available datasets from labguru
 
 ```{r}
-ld <- labguru_list_datasets()
-ld
+ld <- labguru_list_datasets(page = 1)
+head(ld)
 ```
 
 # Download single dataset
@@ -85,14 +85,14 @@ Upload an image
 
 ```{r}
 up_2 <- labguru_upload_file(file  = "../data-raw/grazing.png", 
-                            title = paste("grazing", Sys.time()))
+                            title = paste0("grazing_", gsub("[^[:alnum:]]","", date())))
 up_2
 ```
 
 Attach uploaded file to a database
 
 ```{r}
-up_3 <- labguru_link_visualization(dataset_id = 61,
+up_3 <- labguru_link_visualization(dataset_id = 5511,
                                    attachment_id = up_2$id,
                                    name = "my_link")
 up_3
@@ -102,7 +102,7 @@ Upload image with immediate link to database
 
 ```{r}
 up_4 <- labguru_upload_visualization(file  = "../data-raw/grazing.png", 
-                                     title = paste("grazing_again", Sys.time()),
+                                     title = paste0("grazing_attached_", gsub("[^[:alnum:]]","", date())),
                                      dataset_id = 61,
                                      name = "my_second_link")
 up_4
@@ -157,7 +157,7 @@ List all projects
 
 ```{r}
 projects <- labguru_list_projects(get_cols = "all")
-projects
+dplyr::glimpse(projects)
 ```
 
 Download project information
@@ -184,7 +184,7 @@ List all folders
 ```{r}
 folders <- labguru_list_folders(project_id = 91, # project_id = NULL for all folders in all projects (default)
                                 get_cols   = "all")
-folders
+dplyr::glimpse(folders)
 ```
 
 Download folder information
@@ -232,6 +232,48 @@ experiment_new <- labguru_add_experiment(title       = "My new experiment",
                                          folder_id   = 41,
                                          description = "This experiment is a test from LabguruR",
                                          return      = "all")
-experiment_new
+experiment_new[1:4]
 ```
+
+## Experiment procedures
+
+```{r}
+ep_list <- labguru_list_experiment_procedures(experiment_id = 91, get_cols = "all")
+dplyr::glimpse(ep_list)
+```
+
+```{r}
+ep_new <- labguru_add_experiment_procedure(name          = "New procedure",
+                                           experiment_id = 91)
+ep_new
+```
+
+
+```{r}
+ep_431 <- labguru_get_experiment_procedure(experiment_procedure_id = 431)
+ep_431
+```
+
+## Elements
+
+List elements is EMPTY!
+
+```{r}
+el_list <- labguru_list_elements(experiment_id = 91)
+```
+
+```{r}
+el_new <- labguru_add_element(data = "<p>Hello World</p>",
+                              experiment_procedure_id = 431)
+el_new
+```
+
+
+```{r}
+el_901 <- labguru_get_element(element_id = 901)
+el_901
+```
+
+
+
 
