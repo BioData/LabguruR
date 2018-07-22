@@ -1,6 +1,9 @@
 # LabguruR
 
-The goal of LabguruR is to ...
+The goal of LabguruR is to allow researchers, data scientists, bioniformaticians to directly communicate with Labguru. 
+Currently the package allows you to pull and push datasets and visualizations. 
+The currrent package is in development and you can add tickets and issues; 
+
 
 ## Installation
 
