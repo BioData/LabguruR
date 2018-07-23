@@ -9,4 +9,6 @@ usethis::use_vignette("ic50 integration")
 devtools::document()
 devtools::build_vignettes()
 
-
+#23/7/2018
+options(usethis.full_name = "BioData Ltd")
+usethis::use_mit_license()
