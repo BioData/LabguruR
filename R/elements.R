@@ -21,17 +21,33 @@
 #'                     experiment_procedure_id = 1,
 #'                     return                  = "id")
 #' }
-labguru_add_element <- function(data,
+labguru_add_element <- function(data    = NULL,
+                                img_id  = NULL,
+                                rscript = NULL,
                                 experiment_procedure_id,
-                                return      = "id",
-                                server      = Sys.getenv("LABGURU_SERVER"),
-                                token       = Sys.getenv("LABGURU_TOKEN")) {
+                                return  = "id",
+                                server  = Sys.getenv("LABGURU_SERVER"),
+                                token   = Sys.getenv("LABGURU_TOKEN")) {
   
-  check_arg_single_character(data, null = FALSE)
+  check_arg_single_character(data, null = TRUE)
+  check_arg_single_integer(img_id, null = TRUE)
+  check_arg_single_character(rscript, null = TRUE)
   check_arg_single_integer(experiment_procedure_id, null = FALSE)
   check_arg_char_opts(return, opts = c("id", "all"), null = FALSE)
   check_arg_server(server)
   check_arg_token(token)
+  
+  if (sum(is.null(data), is.null(img_id), is.null(rscript)) != 2) {
+    stop("One of 'data', 'img' or 'rscript' must be a character, the other two must be NULL.")
+  } 
+  if (!is.null(img_id)) {
+    data <- paste0('<img src="',
+                   server,
+                   labguru_get_by_id("attachments", img_id)$meddium_url,
+                   '" >')
+  } else if (!is.null(rscript)) {
+    data <- labguru_read_rscript_to_html(rscript)
+  }
   
   # URL
   url <- httr::modify_url(url   = server,
@@ -161,3 +177,27 @@ labguru_get_element <- function(element_id,
   parsed
 }
 
+
+
+#' Labguru read rscript to html
+#' 
+#' Read an R script and place each line into paragraph tags (<p>)
+#' 
+#' @param file Path to a .R file, or .txt file
+#'
+#' @return character(1) paragraphed R script
+#'
+#' @examples
+labguru_read_rscript_to_html <- function(file) {
+  
+  check_arg_file(file)
+  
+  stopifnot()
+  
+  rscript <- readLines(file)
+  rscript <- paste("<p>", 
+                   paste(rscript, collapse = "</p> <p>"), 
+                   "</p>")
+  
+  rscript
+}

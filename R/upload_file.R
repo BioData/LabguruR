@@ -77,7 +77,7 @@ labguru_upload_file <- function(file,
   if (httr::http_error(resp)) {
     stop(sprintf("API request failed [%s]\n%s", parsed$status, parsed$error), call. = FALSE)
   }
-  
+  browser()
   # invisible(TRUE)
   # RETURN ID AND URL
   list(id  = parsed$id,
@@ -133,8 +133,8 @@ labguru_upload_visualization <- function(file,
   # Link file to dataset if dataset_id is set
   if (!is.null(dataset_id)) {
     # Check arguments
-    check_arg_dataset_id(dataset_id)
-    check_arg_name(name)
+    # check_arg_dataset_id(dataset_id)
+    # check_arg_name(name)
     
     link <- labguru_link_visualization(dataset_id    = dataset_id,
                                        attachment_id = uploaded_file$id,
