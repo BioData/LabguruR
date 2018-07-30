@@ -212,7 +212,7 @@ List all experiments
 
 
 ```{r}
-experiments <- labguru_list_experiments(folder_id  = 1,
+experiments <- labguru_list_experiments(folder_id  = 41,
                                         get_cols   = "limited")
 experiments
 ```
@@ -220,17 +220,17 @@ experiments
 Download experiment information
 
 ```{r}
-experiment_1 <- labguru_get_experiment(experiment_id = 1)
-experiment_1
+experiment_1 <- labguru_get_experiment(experiment_id = 141)
+experiment_1[1:4]
 ```
 
 Start new experiment
 
 ```{r}
-experiment_new <- labguru_add_experiment(title       = "My new experiment",
+experiment_new <- labguru_add_experiment(title       = "My new experiment 26-7-2018",
                                          project_id  = 91,
                                          folder_id   = 41,
-                                         description = "This experiment is a test from LabguruR",
+                                         description = "This experiment is a test from LabguruR  26-7-2018",
                                          return      = "all")
 experiment_new[1:4]
 ```
@@ -238,20 +238,20 @@ experiment_new[1:4]
 ## Experiment procedures
 
 ```{r}
-ep_list <- labguru_list_experiment_procedures(experiment_id = 91, get_cols = "all")
+ep_list <- labguru_list_experiment_procedures(experiment_id = 141, get_cols = "all")
 dplyr::glimpse(ep_list)
 ```
 
 ```{r}
-ep_new <- labguru_add_experiment_procedure(name          = "New procedure",
-                                           experiment_id = 91)
+ep_new <- labguru_add_experiment_procedure(name          = "New procedure 26-7-2018",
+                                           experiment_id = 141)
 ep_new
 ```
 
 
 ```{r}
-ep_431 <- labguru_get_experiment_procedure(experiment_procedure_id = 431)
-ep_431
+ep_271 <- labguru_get_experiment_procedure(experiment_procedure_id = 721)
+ep_271
 ```
 
 ## Elements
@@ -259,21 +259,38 @@ ep_431
 List elements is EMPTY!
 
 ```{r}
-el_list <- labguru_list_elements(experiment_id = 91)
+el_list <- labguru_list_elements(experiment_id = 141)
 ```
 
 ```{r}
 el_new <- labguru_add_element(data = "<p>Hello World</p>",
-                              experiment_procedure_id = 431)
+                              experiment_procedure_id = 721)
 el_new
 ```
 
 
 ```{r}
-el_901 <- labguru_get_element(element_id = 901)
-el_901
+el_1341 <- labguru_get_element(element_id = 1341)
+el_1341
 ```
 
+### Upload R script as element
+
+```{r}
+el_rsc  <- labguru_add_element(rscript = "../data-raw/sample_upload_script.R",
+                               experiment_procedure_id = 721)
+el_rsc
+```
+
+### Upload image as element
+
+Use labguru image id (attachments_id)
+
+```{r}
+el_img  <- labguru_add_element(img_id = 1971,
+                               experiment_procedure_id = 721)
+el_img
+```
 
 
 
