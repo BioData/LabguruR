@@ -3,7 +3,9 @@
 #'
 #' Add a new element to labguru
 #'
-#' @param data character(1) 
+#' @param data character(1) custom html to add or NULL (default), 
+#' @param img_id numeric(1) indicating the image (attachment) id on the labguru server or NULL (default), 
+#' @param rscript character(1) file name of an .R file (or .txt file) or NULL (default), 
 #' @param experiment_procedure_id numeric(1) The experiment procedure id for which to add a new element
 #' @param return character(1) whether the function returns either 'id' (default) or 'all' element information
 #' @param server character(1) indicating the server URL
