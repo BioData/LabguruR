@@ -1,15 +1,18 @@
 Package: LabguruR
-Title: What the Package Does (one line, title case)
+Title: Labguru API wrapper for R
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person('Jonathan', 'Gross', email =
+                    'jonathan.gross@biodata.com', role = c('cre', 'aut'))
+Description: Manage your Labguru analyses from R.
+URL: https://github.com/BioData/LabguruR
+BugReports: https://github.com/BioData/LabguruR/issues
 Depends: R (>= 3.5.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: httr,
-    jsonlite
+jsonlite
 RoxygenNote: 6.0.1
 Suggests: knitr,
-    rmarkdown
+rmarkdown
 VignetteBuilder: knitr
