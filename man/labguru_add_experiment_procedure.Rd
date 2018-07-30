@@ -27,8 +27,8 @@ Add a new experiment procedure to labguru
 }
 \examples{
 \dontrun{
-labguru_add_experiment_procedure(project_id  = 1,
-                                 name        = "My new experiment procedure",
-                                 description = "This experiment procedure contains ...")
+labguru_add_experiment_procedure(name          = "My new experiment procedure",
+                                 experiment_id = 1,
+                                 return        = "id")
 }
 }

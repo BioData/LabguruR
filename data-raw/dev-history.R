@@ -16,3 +16,7 @@ usethis::use_mit_license()
 
 # 30/7/2018 Update description
 # update description file
+
+# 30/7/2018
+devtools::document()
+devtools::build_vignettes()

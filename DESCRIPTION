@@ -11,8 +11,8 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: httr,
-jsonlite
+    jsonlite
 RoxygenNote: 6.0.1
 Suggests: knitr,
-rmarkdown
+    rmarkdown
 VignetteBuilder: knitr
