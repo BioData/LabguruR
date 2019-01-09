@@ -95,6 +95,38 @@ labguru_authenticate <- function(email, password, server = "https://jonathan.lab
 }
 
 
+#' Labguru set token
+#' 
+#' Set token and server as system variables. Useful when a user has a token but no login credentials.
+#'
+#' @param token Labguru API access token
+#' @param server character(1) Server URL, "https://jonathan.labguru.com" by default
+#' @param set_sys  logical(1) Set server and token as system variables LABGURU_SERVER and LABGURU_TOKEN 
+#'
+#' @return Returns the token (visibly or invisibly depending on set_sys)
+#' @export
+#'
+#' @examples
+labguru_set_token <- function(token, server = "https://jonathan.labguru.com", set_sys = TRUE) {
+  
+  check_arg_token(token)
+  check_arg_server(server)
+  check_arg_single_logical(set_sys, null = FALSE)
+  
+  if (set_sys) {
+    Sys.setenv(LABGURU_SERVER = server)
+    Sys.setenv(LABGURU_TOKEN = token)
+    message("Token and server set in environment variable.")
+    
+    # Return token invisibly
+    invisible(token)
+  } else {
+    # If system environment is not set return token visibly
+    token
+  }
+}
+
+
 #' Labguru Valid Token
 #'
 #' @param token Labguru API access token

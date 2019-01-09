@@ -34,7 +34,17 @@ labguru_authenticate(email    = "my@@email.com",
                      set_sys  = TRUE)
 ```
 
-With set_sys = TRUE your system variables LABGURU_SERVER and LABGURU_TOKEN are automatically set and can be picked up by future function calls conencting to the Labguru API. Check these variables using labguru_sys_variables()
+With set_sys = TRUE your system variables LABGURU_SERVER and LABGURU_TOKEN are automatically set and can be picked up by future function calls connecting to the Labguru API. 
+
+If a user doesn't have login credentials but they have a token already then they can set the token (and server) using labguru_set_token.
+
+```{r}
+labguru_set_token(token = "<my token>",
+                  sever = "<my server>")
+```
+
+
+You can inspect the token and server variables using labguru_sys_variables()
 
 ```{r}
 labguru_sys_variables()

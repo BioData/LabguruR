@@ -346,6 +346,7 @@ check_arg_dataframe <- function(dataframe) {
 check_arg_server <- function(server) {
   if (!is.character(server)) stop("Argument server is not a character string")
   if (length(server) != 1) stop("Argument server must be length 1")
+  if (server == "") stop("Argument server can't be empty string ''")
   
   return(TRUE)
 }
