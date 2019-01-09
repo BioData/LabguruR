@@ -39,8 +39,8 @@ With set_sys = TRUE your system variables LABGURU_SERVER and LABGURU_TOKEN are a
 If a user doesn't have login credentials but they have a token already then they can set the token (and server) using labguru_set_token.
 
 ```{r}
-labguru_set_token(token = "<my token>",
-                  sever = "<my server>")
+labguru_set_token(token  = "<my token>",
+                  server = "<my server>")
 ```
 
 
