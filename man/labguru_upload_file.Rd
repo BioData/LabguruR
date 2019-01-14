@@ -37,7 +37,7 @@ plot <- ggplot(compensation,aes(x = Root, y = Fruit, colour = Grazing)) +
   xlab("Root Biomass") +
   ylab("Fruit Production") +
   theme_bw()
-  
+
 ggsave("grazing.png", plot)
 
 labguru_upload_image(file_path   = "grazing.png",
