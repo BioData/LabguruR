@@ -2,4 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-inst/doc
+data-raw/ic50/
+inst/doc/
