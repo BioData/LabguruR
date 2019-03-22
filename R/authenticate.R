@@ -21,9 +21,9 @@
 #' \dontrun{
 #' labguru_authenticate(email    = "my@@email.com",
 #'                      password = "mypassword",
-#'                      server   = "https://jonathan.labguru.com")
+#'                      server   = "https://my.labguru.com")
 #' }
-labguru_authenticate <- function(email, password, server = "https://jonathan.labguru.com", set_sys = TRUE) {
+labguru_authenticate <- function(email, password, server = "https://my.labguru.com", set_sys = TRUE) {
   
   # EXTRAS:
   # Add user agent? ua <- httr::user_agent("http://github.com/BioData/LabguruR")
