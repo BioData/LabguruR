@@ -37,7 +37,7 @@ First get an authentication token using labguru_authenticate.
 ``` r
 labguru_authenticate(email    = "my@@email.com",
                      password = "mypassword",
-                     server   = "https://jonathan.labguru.com",
+                     server   = "https://my.labguru.com",
                      set_sys  = TRUE)
 ```
 
