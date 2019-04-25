@@ -205,6 +205,9 @@ labguru_download_plate <- function(plate,
                           path  = path,
                           query = query)
   
+  # Encoding certain URL characters (like space)
+  url <- URLencode(url)
+  
   resp <- httr::GET(url)
   
   # Expect resp to be JSON 

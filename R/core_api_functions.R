@@ -32,6 +32,9 @@ labguru_get_by_id <- function(type,
                           path  = path,
                           query = query)
   
+  # Encoding certain URL characters (like space)
+  url <- URLencode(url)
+  
   resp <- httr::GET(url)
   
   # Expect resp to be JSON 
@@ -75,6 +78,9 @@ labguru_post_item <- function(url,
                               encode = NULL,
                               config = NULL,
                               handle = NULL) {
+  
+  # Encoding certain URL characters (like space)
+  url <- URLencode(url)
   
   # Build the list such that NULLS are completely left out.
   args <- list()
@@ -124,6 +130,9 @@ labguru_post_item <- function(url,
 labguru_list_items <- function(url,
                                config = NULL,
                                handle = NULL) {
+  
+  # Encoding certain URL characters (like space)
+  url <- URLencode(url)
   
   # Post
   resp <- httr::GET(url = url, 
