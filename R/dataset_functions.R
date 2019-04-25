@@ -51,8 +51,7 @@ labguru_upload_dataset <- function(dataset,
   url <- httr::modify_url(url   = server, 
                           path  = "/api/v1/datasets", 
                           query = paste0("token=", token, 
-                                         "&name=", name))#, 
-                          # if (!is.null(description)) {paste0("&description=", description)}))
+                                         "&name=", name))
   
   parsed <- labguru_post_item(url    = url,
                               body   = as.data.frame(dataset),
