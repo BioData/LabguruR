@@ -92,6 +92,12 @@ labguru_ic50_analysis <- function(plate_id,
                                   server         = Sys.getenv("LABGURU_SERVER"), 
                                   token          = Sys.getenv("LABGURU_TOKEN")) {
   
+  if (!"package:ic50" %in% search()) {
+    message("First you must load the ic50 package for this function to run. 
+            Run library(ic50), then run the function again.")
+    return(NULL)
+  }
+  
   check_arg_single_integer(plate_id, null = FALSE)
   check_arg_single_character(indir, null = FALSE)
   check_arg_single_character(outdir_plate, null = FALSE)
