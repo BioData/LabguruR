@@ -57,7 +57,7 @@ compensation
 ```
 
 ``` r
-# HAS THE API FOR DATASET CHANGED ALREADY? BECAUSE IT SEEMS THIS FUNCTION BROKE.
+
 up_0 <- labguru_upload_dataset(dataset = compensation,
                                name    = paste0("compensation_", gsub("[^[:alnum:]]","", date())))
 up_0
