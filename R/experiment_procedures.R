@@ -155,7 +155,7 @@ labguru_get_experiment_procedure <- function(experiment_procedure_id,
   check_arg_server(server)
   check_arg_token(token)
 
-  parsed <- labguru_get_by_id(type   = "element_containers",
+  parsed <- labguru_get_by_id(type   = "sections",
                               id     = experiment_procedure_id,
                               server = server,
                               token  = token)
