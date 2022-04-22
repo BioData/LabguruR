@@ -4,10 +4,15 @@
 \alias{labguru_add_element}
 \title{Labguru add element}
 \usage{
-labguru_add_element(data = NULL, img_id = NULL, rscript = NULL,
-  experiment_procedure_id, return = "id",
+labguru_add_element(
+  data = NULL,
+  img_id = NULL,
+  rscript = NULL,
+  experiment_procedure_id,
+  return = "id",
   server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{data}{character(1) custom html to add or NULL (default),}

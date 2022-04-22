@@ -15,3 +15,6 @@ data frame of dilution data
 \description{
 Labguru create dilution data for ic50
 }
+\examples{
+# helper function to create dilution data
+}

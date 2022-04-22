@@ -7,19 +7,18 @@
 labguru_list_items(url, config = NULL, handle = NULL)
 }
 \arguments{
-\item{url}{}
+\item{url}{url to the labGuru instance API endpoint}
 
-\item{config}{}
+\item{config}{other configuration options passed on to httr GET}
 
-\item{handle}{}
-
-\item{body}{}
-
-\item{encode}{}
+\item{handle}{handling arguments passed on to httr POST}
 }
 \value{
 parsed object
 }
 \description{
 List
+}
+\examples{
+# helper function for GET requests
 }

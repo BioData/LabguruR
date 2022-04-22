@@ -4,9 +4,14 @@
 \alias{labguru_link_visualization}
 \title{Labguru link visualization}
 \usage{
-labguru_link_visualization(dataset_id, attachment_id, name,
-  description = NULL, server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+labguru_link_visualization(
+  dataset_id,
+  attachment_id,
+  name,
+  description = NULL,
+  server = Sys.getenv("LABGURU_SERVER"),
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{dataset_id}{numeric(1) The dataset id for which to link visualization}
@@ -26,4 +31,7 @@ labguru_link_visualization(dataset_id, attachment_id, name,
 }
 \description{
 Link a visualization to a dataset on the Labguru server.
+}
+\examples{
+# helper for visulization linkage
 }

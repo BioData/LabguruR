@@ -4,9 +4,13 @@
 \alias{labguru_list_folders}
 \title{Labguru list folders}
 \usage{
-labguru_list_folders(project_id = NULL, page = 1, get_cols = "limited",
+labguru_list_folders(
+  project_id = NULL,
+  page = 1,
+  get_cols = "limited",
   server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{project_id}{numeric(1) The project is for which to list folders, NULL (default) returns for all projects}

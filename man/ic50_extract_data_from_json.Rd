@@ -7,11 +7,14 @@
 ic50_extract_data_from_json(prs_data)
 }
 \arguments{
-\item{data}{Parsed JSON plate data from Labguru}
+\item{prs_data}{Parsed JSON plate data from Labguru}
 }
 \value{
 data frame
 }
 \description{
 ic50 extract data from json
+}
+\examples{
+# helper functionality to extract data from json
 }

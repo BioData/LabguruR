@@ -4,8 +4,12 @@
 \alias{labguru_authenticate}
 \title{Labguru Authenticate}
 \usage{
-labguru_authenticate(email, password, server = "https://jonathan.labguru.com",
-  set_sys = TRUE)
+labguru_authenticate(
+  email,
+  password,
+  server = "https://my.labguru.com",
+  set_sys = TRUE
+)
 }
 \arguments{
 \item{email}{character(1) email address}
@@ -20,13 +24,13 @@ labguru_authenticate(email, password, server = "https://jonathan.labguru.com",
 acces token (string)
 }
 \description{
-This function authenticates a user by email and password and returns a token and sets the system 
+This function authenticates a user by email and password and returns a token and sets the system
 variable LABGURU_TOKEN to that token by default.
 }
 \examples{
 \dontrun{
 labguru_authenticate(email    = "my@email.com",
                      password = "mypassword",
-                     server   = "https://jonathan.labguru.com")
+                     server   = "https://my.labguru.com")
 }
 }

@@ -4,9 +4,13 @@
 \alias{labguru_list_experiments}
 \title{Labguru list experiments}
 \usage{
-labguru_list_experiments(folder_id = NULL, page = 1, get_cols = "limited",
+labguru_list_experiments(
+  folder_id = NULL,
+  page = 1,
+  get_cols = "limited",
   server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{folder_id}{numeric(1) The folder id for which to list experiments.}

@@ -15,3 +15,6 @@ data frame of measure data
 \description{
 Labguru create measure data for ic50
 }
+\examples{
+# helper function to create measurement data
+}

@@ -4,9 +4,13 @@
 \alias{labguru_list_elements}
 \title{Labguru list elements}
 \usage{
-labguru_list_elements(experiment_id = NULL, page = 1,
-  get_cols = "limited", server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+labguru_list_elements(
+  experiment_id = NULL,
+  page = 1,
+  get_cols = "limited",
+  server = Sys.getenv("LABGURU_SERVER"),
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{experiment_id}{numeric(1) The experiment id for which to list elements.}
@@ -28,8 +32,8 @@ This function returns information of the available elements in a data frame.
 \examples{
 \dontrun{
 # The following example shows limited information for elements in all elements (default)
-labguru_list_elements(experiment_id = NULL, 
-                      page          = 1, 
+labguru_list_elements(experiment_id = NULL,
+                      page          = 1,
                       get_cols      = "limited")
 }
 }

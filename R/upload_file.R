@@ -53,10 +53,10 @@ labguru_upload_file <- function(file,
 
   url <- httr::modify_url(url   = base_url,
                           path  = path)
-  
+
   # Encoding certain URL characters (like space)
   url <- URLencode(url)
-  
+
   # Body
   body <- list("token"                = token,
                "item[title]"          = title,
@@ -107,6 +107,7 @@ labguru_upload_file <- function(file,
 #' @export
 #'
 #' @examples
+#' # helper for visualization uploads
 labguru_upload_visualization <- function(file,
                                          title,
                                          dataset_id     = NULL,
@@ -171,6 +172,7 @@ labguru_upload_visualization <- function(file,
 #' @importFrom jsonlite fromJSON
 #'
 #' @examples
+#' # helper for visulization linkage
 labguru_link_visualization <- function(dataset_id,
                                        attachment_id,
                                        name,
@@ -209,7 +211,7 @@ labguru_link_visualization <- function(dataset_id,
 
   # Encoding certain URL characters (like space)
   url <- URLencode(url)
-  
+
   data <- list(dataset_id    = dataset_id,
                attachment_id = attachment_id,
                name          = name,

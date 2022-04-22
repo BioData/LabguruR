@@ -4,8 +4,11 @@
 \alias{labguru_get_folder}
 \title{Labguru get folder}
 \usage{
-labguru_get_folder(folder_id, server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+labguru_get_folder(
+  folder_id,
+  server = Sys.getenv("LABGURU_SERVER"),
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{folder_id}{numeric(1) id indicating a folder on labguru server}

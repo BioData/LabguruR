@@ -4,8 +4,12 @@
 \alias{labguru_upload_dataset}
 \title{Labguru Upload Dataset}
 \usage{
-labguru_upload_dataset(dataset, name, server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+labguru_upload_dataset(
+  dataset,
+  name,
+  server = Sys.getenv("LABGURU_SERVER"),
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{dataset}{data frame you wish to upload to Labguru}

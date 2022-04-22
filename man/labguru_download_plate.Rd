@@ -4,9 +4,12 @@
 \alias{labguru_download_plate}
 \title{Labguru download plate}
 \usage{
-labguru_download_plate(plate, dir = "./plate",
+labguru_download_plate(
+  plate,
+  dir = "./plate",
   server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{plate}{numeric(1) indicating the plate id}

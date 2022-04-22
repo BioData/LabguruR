@@ -4,8 +4,11 @@
 \alias{labguru_set_token}
 \title{Labguru set token}
 \usage{
-labguru_set_token(token, server = "https://jonathan.labguru.com",
-  set_sys = TRUE)
+labguru_set_token(
+  token,
+  server = "https://jonathan.labguru.com",
+  set_sys = TRUE
+)
 }
 \arguments{
 \item{token}{Labguru API access token}
@@ -19,4 +22,7 @@ Returns the token (visibly or invisibly depending on set_sys)
 }
 \description{
 Set token and server as system variables. Useful when a user has a token but no login credentials.
+}
+\examples{
+# helper function to set labguru token
 }

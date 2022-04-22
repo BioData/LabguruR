@@ -4,8 +4,11 @@
 \alias{labguru_get_experiment}
 \title{Labguru get experiment}
 \usage{
-labguru_get_experiment(experiment_id, server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+labguru_get_experiment(
+  experiment_id,
+  server = Sys.getenv("LABGURU_SERVER"),
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{experiment_id}{numeric(1) id indicating a experiment on labguru server}
