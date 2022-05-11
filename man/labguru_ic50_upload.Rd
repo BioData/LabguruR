@@ -4,9 +4,14 @@
 \alias{labguru_ic50_upload}
 \title{Labguru ic50 upload}
 \usage{
-labguru_ic50_upload(table, name, results_dir, img_pdf,
+labguru_ic50_upload(
+  table,
+  name,
+  results_dir,
+  img_pdf,
   server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{table}{data frame containing ic50 results}
@@ -26,4 +31,7 @@ list() with upload information
 }
 \description{
 Upload labguru ic50 analysis results to the server.
+}
+\examples{
+# upload helper functionality
 }

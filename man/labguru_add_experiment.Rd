@@ -4,9 +4,15 @@
 \alias{labguru_add_experiment}
 \title{Labguru add experiment}
 \usage{
-labguru_add_experiment(title, project_id, folder_id, description = NULL,
-  return = "id", server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+labguru_add_experiment(
+  title,
+  project_id,
+  folder_id,
+  description = NULL,
+  return = "id",
+  server = Sys.getenv("LABGURU_SERVER"),
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{title}{character(1) The title of the experiment}

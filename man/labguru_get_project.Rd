@@ -4,8 +4,11 @@
 \alias{labguru_get_project}
 \title{Labguru get project}
 \usage{
-labguru_get_project(project_id, server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+labguru_get_project(
+  project_id,
+  server = Sys.getenv("LABGURU_SERVER"),
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{project_id}{numeric(1) id indicating a project on labguru server}

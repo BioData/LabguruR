@@ -4,9 +4,13 @@
 \alias{labguru_add_project}
 \title{Labguru add project}
 \usage{
-labguru_add_project(title, description = NULL, return = "id",
+labguru_add_project(
+  title,
+  description = NULL,
+  return = "id",
   server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{title}{character(1) The title of the project}

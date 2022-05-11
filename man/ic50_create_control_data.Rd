@@ -17,3 +17,6 @@ data frame of control data
 \description{
 Labguru create control data for ic50
 }
+\examples{
+# helper function to create control data
+}

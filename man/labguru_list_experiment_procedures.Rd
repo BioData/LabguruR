@@ -4,9 +4,13 @@
 \alias{labguru_list_experiment_procedures}
 \title{Labguru list experiment_procedures}
 \usage{
-labguru_list_experiment_procedures(experiment_id = NULL, page = 1,
-  get_cols = "limited", server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+labguru_list_experiment_procedures(
+  experiment_id = NULL,
+  page = 1,
+  get_cols = "limited",
+  server = Sys.getenv("LABGURU_SERVER"),
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{experiment_id}{numeric(1) The experiment id for which to list experiment procedures.}

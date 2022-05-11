@@ -15,3 +15,6 @@ character(1) paragraphed R script
 \description{
 Read an R script and place each line into paragraph tags (<p>)
 }
+\examples{
+# helper function to parse to html
+}

@@ -4,9 +4,13 @@
 \alias{labguru_upload_file}
 \title{Labguru upload file}
 \usage{
-labguru_upload_file(file, title, description = NULL,
+labguru_upload_file(
+  file,
+  title,
+  description = NULL,
   server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{file}{character(1) that is the path to a file}

@@ -4,8 +4,11 @@
 \alias{labguru_download_dataset}
 \title{Labguru download dataset}
 \usage{
-labguru_download_dataset(dataset_id, server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+labguru_download_dataset(
+  dataset_id,
+  server = Sys.getenv("LABGURU_SERVER"),
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{dataset_id}{numeric(1) id indicating a dataset on labguru server}

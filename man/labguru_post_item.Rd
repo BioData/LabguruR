@@ -7,19 +7,22 @@
 labguru_post_item(url, body, encode = NULL, config = NULL, handle = NULL)
 }
 \arguments{
-\item{url}{}
+\item{url}{url to the labGuru instance API endpoint}
 
-\item{body}{}
+\item{body}{content to be included in POST call}
 
-\item{encode}{}
+\item{encode}{encoding of the request (defaults to NULL, should be JSON)}
 
-\item{config}{}
+\item{config}{other configuration options passed on to httr POST}
 
-\item{handle}{}
+\item{handle}{handling arguments passed on to httr POST}
 }
 \value{
 parsed object
 }
 \description{
 POST a body to a url with optional arguments. Function includes standard error handling.
+}
+\examples{
+# helper function for POST requests
 }

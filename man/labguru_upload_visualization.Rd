@@ -4,9 +4,15 @@
 \alias{labguru_upload_visualization}
 \title{Labguru upload visualization}
 \usage{
-labguru_upload_visualization(file, title, dataset_id = NULL, name = NULL,
-  description = NULL, server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+labguru_upload_visualization(
+  file,
+  title,
+  dataset_id = NULL,
+  name = NULL,
+  description = NULL,
+  server = Sys.getenv("LABGURU_SERVER"),
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{file}{character(1) that is a path to a file}
@@ -23,6 +29,12 @@ labguru_upload_visualization(file, title, dataset_id = NULL, name = NULL,
 
 \item{token}{character(1) access token for API authentication}
 }
+\value{
+
+}
 \description{
 Upload a visualization to the Labguru server.
+}
+\examples{
+# helper for visualization uploads
 }

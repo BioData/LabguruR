@@ -4,8 +4,12 @@
 \alias{labguru_get_by_id}
 \title{Labguru get by id}
 \usage{
-labguru_get_by_id(type, id, server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+labguru_get_by_id(
+  type,
+  id,
+  server = Sys.getenv("LABGURU_SERVER"),
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{type}{character(1) type name of what you want to request}

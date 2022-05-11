@@ -4,11 +4,19 @@
 \alias{labguru_ic50_analysis}
 \title{Labguru ic50 Analysis}
 \usage{
-labguru_ic50_analysis(plate_id, indir = ".", outdir_plate = "./plate",
-  outdir_results = "./results", plates = 2, inhib = NULL,
-  normalize = "single", graphics = "mean", img_png = TRUE,
+labguru_ic50_analysis(
+  plate_id,
+  indir = ".",
+  outdir_plate = "./plate",
+  outdir_results = "./results",
+  plates = 2,
+  inhib = NULL,
+  normalize = "single",
+  graphics = "mean",
+  img_png = TRUE,
   server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{plate_id}{numeric(1) plate id of the plate from labguru server}
@@ -33,6 +41,14 @@ labguru_ic50_analysis(plate_id, indir = ".", outdir_plate = "./plate",
 
 \item{token}{character(1) access token for API authentication}
 }
+\value{
+
+}
 \description{
 Download plate from labguru server and run ic50 analysis.
+}
+\examples{
+if(requireNamespace("ic50", quietly = TRUE)){
+ ic50lgres <- labguru_ic50_analysis()
+}
 }

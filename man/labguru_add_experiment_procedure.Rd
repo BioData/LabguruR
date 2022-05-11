@@ -4,9 +4,13 @@
 \alias{labguru_add_experiment_procedure}
 \title{Labguru add experiment procedure}
 \usage{
-labguru_add_experiment_procedure(name, experiment_id, return = "id",
+labguru_add_experiment_procedure(
+  name,
+  experiment_id,
+  return = "id",
   server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{name}{character(1) The name of the experiment procedure}

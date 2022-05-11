@@ -4,8 +4,11 @@
 \alias{labguru_get_element}
 \title{Labguru get element}
 \usage{
-labguru_get_element(element_id, server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+labguru_get_element(
+  element_id,
+  server = Sys.getenv("LABGURU_SERVER"),
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{element_id}{numeric(1) id indicating a element on labguru server}

@@ -4,9 +4,12 @@
 \alias{labguru_list_datasets}
 \title{Labguru list datasets}
 \usage{
-labguru_list_datasets(page = 1, get_cols = "limited",
+labguru_list_datasets(
+  page = 1,
+  get_cols = "limited",
   server = Sys.getenv("LABGURU_SERVER"),
-  token = Sys.getenv("LABGURU_TOKEN"))
+  token = Sys.getenv("LABGURU_TOKEN")
+)
 }
 \arguments{
 \item{page}{numeric(1) representing the page number of data to request. Limited data can be return in 1 request, incrementally try higher page numbers for more datasets}
