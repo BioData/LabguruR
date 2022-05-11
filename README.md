@@ -116,46 +116,6 @@ up_4
 ```
 
 
-# ic50 Analysis
-
-## Only downloading a plate's measure, dilution and control files
-
-Stores measure.txt, control.txt and dilution.txt in a new plate folder. If plate/ directory already exists it only runs if this directory is empty.
-
-``` r
-labguru_download_plate(plate = 271,
-                       dir = "./plate")
-```
-
-## ic50 analysis storing plate information and results locally
-
-This function downloads the plate using plate_id and stores those results in outdir_plate. It then looks for the data files in the indir directory and performes the ic50 analysis using plates, inhib, normalize and graphics. It stores results in outdir_results directory. If img_png is true it also stores the images from the dose_response_curves pdf as single png images.
-
-``` r
-library(ic50) # ic50 library has to be loaded otherwise you get errors with '.lastxx_measure' files
-
-ic50 <- labguru_ic50_analysis(plate_id       = 271, 
-                              indir          = ".",
-                              outdir_plate   = "./plate",
-                              outdir_results = "./results",
-                              plates         = 2,
-                              inhib          = rep(0.5,7),
-                              normalize      = "mean",
-                              graphics       = "single",
-                              img_png        = TRUE)
-ic50
-```
-
-## Upload ic50 results to Labguru
-
-``` r
-up_5 <- labguru_ic50_upload(table       = ic50$result,
-                            name        = paste0("data_", gsub("[^[:alnum:]]","", date())),
-                            results_dir = ic50$dir,
-                            img_pdf     = "img")
-up_5
-```
-
 # Experiment
 
 ## Project
