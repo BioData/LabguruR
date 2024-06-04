@@ -36,7 +36,7 @@
 labguru_upload_file <- function(file,
                                 title,
                                 description    = NULL,
-                                # attach_to_uuid = NULL,
+                                attach_to_uuid = NULL,
                                 server         = Sys.getenv("LABGURU_SERVER"),
                                 token          = Sys.getenv("LABGURU_TOKEN")) {
 
@@ -61,12 +61,12 @@ labguru_upload_file <- function(file,
   body <- list("token"                = token,
                "item[title]"          = title,
                "item[description]"    = description,
-               "item[attachment]"     = httr::upload_file(file))#,
-               # "item[attach_to_uuid]" = attach_to_uuid)
+			   "item[attachable_type]"="Projects::Experiment",
+               "item[attachment]"     = httr::upload_file(file),
+               "item[attach_to_uuid]" = attach_to_uuid)
 
   # Post
-  resp <- httr::POST(url    = url,
-                     body   = body)
+  resp <- httr::POST(url    = url, body   = body)
 
   # Expect resp to be JSON
   if (httr::http_type(resp) != "application/json") {

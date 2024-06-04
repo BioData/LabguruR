@@ -112,7 +112,8 @@ labguru_list_folders <- function(project_id = NULL,
   url <- httr::modify_url(url   = server, 
                           path  = "/api/v1/milestones",
                           query = paste0("token=", token, 
-                                         "&page=", page))
+										 "&period=current_milestones",
+										 "&project_id=", project_id))
   
   parsed <- labguru_list_items(url)
   
@@ -122,14 +123,9 @@ labguru_list_folders <- function(project_id = NULL,
     return(NULL)
   }
   
-  # Filter project id
-  if (!is.null(project_id)) {
-    parsed <- parsed[parsed$project_id == project_id, ]
-  }
-  
   # Subset primary elements that can't be NULL
   if (get_cols == "limited") {
-    parsed[c("id", "project_id", "title", "description", "api_url")]
+    parsed[c("id", "title", "description")]
   } else {
     parsed
   }

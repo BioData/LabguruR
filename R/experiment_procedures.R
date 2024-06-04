@@ -36,7 +36,7 @@ labguru_add_experiment_procedure <- function(name,
 
   # URL
   url <- httr::modify_url(url   = server,
-                          path  = "/api/v1/element_containers")
+                          path  = "/api/v1/sections")
 
   # Body
   body <- list("token"                = token,
@@ -45,8 +45,7 @@ labguru_add_experiment_procedure <- function(name,
                "item[container_type]" = "Projects::Experiment")
   
   # POST
-  parsed <- labguru_post_item(url  = url,
-                              body = body)
+  parsed <- labguru_post_item(url  = url, body = body)
 
   # return information
   if (return == "id") {
@@ -95,9 +94,8 @@ labguru_list_experiment_procedures <- function(experiment_id = NULL,
   
   # URL
   url <- httr::modify_url(url   = server, 
-                          path  = "/api/v1/element_containers",
-                          query = paste0("token=", token, 
-                                         "&page=", page))
+                          path  = paste0("/api/v1/experiments/", experiment_id, "elements"),
+                          query = paste0("token=", token))
   
   parsed <- labguru_list_items(url)
   
@@ -106,19 +104,19 @@ labguru_list_experiment_procedures <- function(experiment_id = NULL,
     message("No experiments were available for this request")
     return(NULL)
   }
-  
-  # experiment_id not available in parsed result so find experiment_procedure_ids from a get_experiment request
-  if (!is.null(experiment_id)) {
-    ex_pr_id <- labguru_get_experiment(experiment_id = experiment_id)
-    ex_pr_id <- ex_pr_id$experiment_procedures$experiment_procedure.id
-      
-    parsed <- parsed[parsed$id %in% ex_pr_id, ]
-    
-    if (nrow(parsed) == 0) {
-      message("No experiments were available for this request")
-      return(NULL)
-    }
-  }
+# Statement below is not ture  
+#   # experiment_id not available in parsed result so find experiment_procedure_ids from a get_experiment request
+#   if (!is.null(experiment_id)) {
+#     ex_pr_id <- labguru_get_experiment(experiment_id = experiment_id)
+#     ex_pr_id <- ex_pr_id$experiment_procedures$experiment_procedure.id
+#       
+#     parsed <- parsed[parsed$id %in% ex_pr_id, ]
+#     
+#     if (nrow(parsed) == 0) {
+#       message("No experiments were available for this request")
+#       return(NULL)
+#     }
+#   }
   
   # Subset primary elements that can't be NULL
   if (get_cols == "limited") {

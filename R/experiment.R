@@ -127,7 +127,7 @@ labguru_list_experiments <- function(folder_id = NULL,
   
   # Empty pages return and empty list 
   if (length(parsed) == 0) {
-    message("No experiments were available for this request")
+    message("No experiments were available for this request; maybe that page number doesn't exist?")
     return(NULL)
   }
   
@@ -139,7 +139,7 @@ labguru_list_experiments <- function(folder_id = NULL,
     parsed <- parsed[parsed$id %in% exp_id, ]
     
     if (nrow(parsed) == 0) {
-      message("No experiments were available for this request")
+      message("No experiments were available for this request using that page number")
       return(NULL)
     }
   }
