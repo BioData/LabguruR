@@ -190,10 +190,83 @@ labguru_get_experiment <- function(experiment_id,
 
 
 
-labguru_add_attachment_to_experiment <- function() {
-  
-  
-  
+#' Labguru add attachment to experiment
+#'
+#' Upload a file (image, PDF, etc.) and attach it to an experiment.
+#' This is useful for adding results like ggplots or analysis outputs to experiments.
+#'
+#' @param file character(1) path to the file to upload
+#' @param experiment_id numeric(1) The experiment id to attach the file to
+#' @param title character(1) title for the attachment. If NULL, uses the file's basename.
+#' @param description character(1) description of the attachment
+#' @param server character(1) indicating the server URL
+#' @param token character(1) access token for API authentication
+#'
+#' @return list containing attachment id and url
+#' @export
+#'
+#' @import httr
+#' @importFrom jsonlite fromJSON
+#'
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' data("compensation")
+#'
+#' # Create a plot
+#' plot <- ggplot(compensation, aes(x = Root, y = Fruit, colour = Grazing)) +
+#'   geom_point(size = 5) +
+#'   theme_bw()
+#'
+#' # Save to file
+#' ggsave("results.png", plot)
+#'
+#' # Upload and attach to experiment
+#' labguru_add_attachment_to_experiment(file          = "results.png",
+#'                                      experiment_id = 123,
+#'                                      description   = "Analysis results")
+#' }
+labguru_add_attachment_to_experiment <- function(file,
+                                                 experiment_id,
+                                                 title       = NULL,
+                                                 description = NULL,
+                                                 server      = Sys.getenv("LABGURU_SERVER"),
+                                                 token       = Sys.getenv("LABGURU_TOKEN")) {
+
+  # Test arguments
+  check_arg_file(file)
+  check_arg_single_integer(experiment_id, null = FALSE)
+  check_arg_single_character(title, null = TRUE)
+  check_arg_single_character(description, null = TRUE)
+  check_arg_server(server)
+  check_arg_token(token)
+
+  # Use basename as title if not provided
+  if (is.null(title)) {
+    title <- basename(file)
+  }
+
+  # Get experiment to retrieve UUID
+
+  experiment <- labguru_get_experiment(experiment_id = experiment_id,
+                                       server        = server,
+                                       token         = token)
+
+  # Check for UUID in response
+
+  if (is.null(experiment$uuid)) {
+    stop("Could not retrieve UUID for experiment ", experiment_id)
+  }
+
+  # Upload file with attachment to experiment UUID
+  result <- labguru_upload_file(file           = file,
+                                title          = title,
+                                description    = description,
+                                attach_to_uuid = experiment$uuid,
+                                server         = server,
+                                token          = token)
+
+  result
 }
 
 

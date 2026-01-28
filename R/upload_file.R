@@ -4,9 +4,10 @@
 #' Upload a file to Labguru
 #'
 #' @param file character(1) that is the path to a file
-#' @param title character(1) as visualization title on Labguru
+#' @param title character(1) as visualization title on Labguru. Should match the file name including extension.
 #' @param description character(1) to describe visualization on Labguru
-#' @param attach_to_uuid (optional) character(1) that is the LG_UUID of the object to which this file should be attached
+#' @param attach_to_uuid character(1) (optional) The UUID of the object to which this file should be attached.
+#'   If not provided, the file will be uploaded but not associated with any entity.
 #' @param server character(1) indicating the server URL
 #' @param token character(1) access token for API authentication
 #'
@@ -29,14 +30,14 @@
 #'
 #' ggsave("grazing.png", plot)
 #'
-#' labguru_upload_image(file_path   = "grazing.png",
-#'                      name        = "Grazing",
-#'                      description = "Fruit production versus Root biomass for grazed and ungrazed")
+#' labguru_upload_file(file        = "grazing.png",
+#'                     title       = "grazing.png",
+#'                     description = "Fruit production versus Root biomass for grazed and ungrazed")
 #' }
 labguru_upload_file <- function(file,
                                 title,
                                 description    = NULL,
-                                # attach_to_uuid = NULL,
+                                attach_to_uuid = NULL,
                                 server         = Sys.getenv("LABGURU_SERVER"),
                                 token          = Sys.getenv("LABGURU_TOKEN")) {
 
@@ -44,6 +45,7 @@ labguru_upload_file <- function(file,
   check_arg_file(file)
   check_arg_single_character(title, null = FALSE)
   check_arg_single_character(description, null = TRUE)
+  check_arg_single_character(attach_to_uuid, null = TRUE)
   check_arg_server(server)
   check_arg_token(token)
 
@@ -61,8 +63,8 @@ labguru_upload_file <- function(file,
   body <- list("token"                = token,
                "item[title]"          = title,
                "item[description]"    = description,
-               "item[attachment]"     = httr::upload_file(file))#,
-               # "item[attach_to_uuid]" = attach_to_uuid)
+               "item[attachment]"     = httr::upload_file(file),
+               "item[attach_to_uuid]" = attach_to_uuid)
 
   # Post
   resp <- httr::POST(url    = url,

@@ -1,0 +1,26 @@
+# LabguruR Changelog
+
+## 2026-01-28
+
+### Added - Comment and Attachment Functions (Issue #11)
+
+**New file: R/comment.R**
+- `labguru_add_comment()` - Add text comments to any Labguru entity (experiments, plasmids, projects, etc.)
+- `labguru_list_comments()` - List all comments with pagination
+- `labguru_get_comment()` - Retrieve a comment by ID
+
+**Updated: R/experiment.R**
+- `labguru_add_attachment_to_experiment()` - Upload files (images, PDFs) and attach them to experiments via UUID
+
+**Updated: R/upload_file.R**
+- Enabled `attach_to_uuid` parameter to allow linking uploaded files to entities
+
+**Updated: R/helpers.R**
+- Added `LABGURU_ENTITY_TYPES` constant mapping short type names to Labguru API class names
+- Added `labguru_get_entity_type()` helper function for type conversion
+
+**New file: CLAUDE.md**
+- Added Claude Code guidance file for future AI assistant sessions
+
+**New file: swagger.yml**
+- Added Labguru API OpenAPI specification for reference
