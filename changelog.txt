@@ -1,5 +1,30 @@
 # LabguruR Changelog
 
+## 2026-01-29
+
+### Added - Comprehensive Test Suite
+
+**New directory: tests/testthat/**
+- Added complete testthat test suite with 167 tests covering all package functions
+- `test-authenticate.R` - 8 tests for authentication functions
+- `test-project.R` - 10 tests for project CRUD operations
+- `test-folder.R` - 12 tests for folder CRUD operations
+- `test-experiment.R` - 15 tests for experiment functions
+- `test-experiment-procedure.R` - 12 tests for experiment procedure functions
+- `test-element.R` - 13 tests for element functions
+- `test-dataset.R` - 10 tests for dataset upload/download
+- `test-comment.R` - 17 tests for comment functions
+- `test-upload.R` - 9 tests for file upload functions
+- `test-ic50.R` - 11 tests for IC50 analysis functions
+- `test-helpers.R` - 50 tests for helper functions and argument validation
+
+**Updated: DESCRIPTION**
+- Added testthat (>= 3.0.0) to Suggests
+- Added Config/testthat/edition: 3
+
+**Updated: man/ documentation**
+- Regenerated roxygen2 documentation for all functions
+
 ## 2026-01-28
 
 ### Added - Comment and Attachment Functions (Issue #11)

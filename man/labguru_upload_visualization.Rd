@@ -29,9 +29,6 @@ labguru_upload_visualization(
 
 \item{token}{character(1) access token for API authentication}
 }
-\value{
-
-}
 \description{
 Upload a visualization to the Labguru server.
 }

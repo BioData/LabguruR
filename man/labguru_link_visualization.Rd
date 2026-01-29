@@ -26,9 +26,6 @@ labguru_link_visualization(
 
 \item{token}{character(1) access token for API authentication}
 }
-\value{
-
-}
 \description{
 Link a visualization to a dataset on the Labguru server.
 }

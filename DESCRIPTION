@@ -14,9 +14,11 @@ Imports:
     httr,
     jsonlite,
     magick
-RoxygenNote: 7.1.2
-Suggests: 
+RoxygenNote: 7.3.3
+Suggests:
     knitr,
     rmarkdown,
-    ic50
+    ic50,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
 VignetteBuilder: knitr

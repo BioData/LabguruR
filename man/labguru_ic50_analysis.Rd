@@ -41,9 +41,6 @@ labguru_ic50_analysis(
 
 \item{token}{character(1) access token for API authentication}
 }
-\value{
-
-}
 \description{
 Download plate from labguru server and run ic50 analysis.
 }

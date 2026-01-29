@@ -8,6 +8,7 @@ labguru_upload_file(
   file,
   title,
   description = NULL,
+  attach_to_uuid = NULL,
   server = Sys.getenv("LABGURU_SERVER"),
   token = Sys.getenv("LABGURU_TOKEN")
 )
@@ -15,15 +16,16 @@ labguru_upload_file(
 \arguments{
 \item{file}{character(1) that is the path to a file}
 
-\item{title}{character(1) as visualization title on Labguru}
+\item{title}{character(1) as visualization title on Labguru. Should match the file name including extension.}
 
 \item{description}{character(1) to describe visualization on Labguru}
+
+\item{attach_to_uuid}{character(1) (optional) The UUID of the object to which this file should be attached.
+If not provided, the file will be uploaded but not associated with any entity.}
 
 \item{server}{character(1) indicating the server URL}
 
 \item{token}{character(1) access token for API authentication}
-
-\item{attach_to_uuid}{(optional) character(1) that is the LG_UUID of the object to which this file should be attached}
 }
 \value{
 list containing uploaded id and url
@@ -44,8 +46,8 @@ plot <- ggplot(compensation,aes(x = Root, y = Fruit, colour = Grazing)) +
 
 ggsave("grazing.png", plot)
 
-labguru_upload_image(file_path   = "grazing.png",
-                     name        = "Grazing",
-                     description = "Fruit production versus Root biomass for grazed and ungrazed")
+labguru_upload_file(file        = "grazing.png",
+                    title       = "grazing.png",
+                    description = "Fruit production versus Root biomass for grazed and ungrazed")
 }
 }
